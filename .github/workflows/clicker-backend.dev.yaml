@@ -1,0 +1,52 @@
+name: (DEV) Build and deploy clicker-backend
+on:
+  workflow_run:
+    workflows:
+      - Checks for clicker-backend
+    branches: [ main ]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./clicker-backend
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Process version
+        id: version
+        run: |
+          echo "::set-output name=version::main-${{ github.run_attempt}}-$(git rev-parse --short HEAD)"
+
+      - name: Configure AWS credentials for push images
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: clicker-backend
+          IMAGE_TAG: latest
+          ENV: dev
+        run: |
+          docker build -f Dockerfile-$ENV -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+

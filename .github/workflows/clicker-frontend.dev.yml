@@ -1,0 +1,48 @@
+name: (DEV) Build and deploy clicker-frontend
+
+on:
+  push:
+    paths:
+      - 'clicker-frontend/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install Dependencies common
+        run: npm install
+        working-directory: ./common
+
+      - name: Install Dependencies common-ui
+        run: npm install
+        working-directory: ./common-ui
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ./clicker-frontend
+
+      - name: Check build
+        run: npm run build:dev
+        working-directory: ./clicker-frontend
+
+      - name: Check lint rules
+        run: npm run lint
+        working-directory: ./clicker-frontend
+
+      - name: Upload to Cloudflare Pages
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: 'crypto-bot-clicker-frontend-dev'
+          directory: clicker-frontend/dist
+          branch: main # target branch
