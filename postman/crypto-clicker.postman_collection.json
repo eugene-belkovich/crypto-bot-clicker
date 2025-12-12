@@ -1,0 +1,122 @@
+{
+  "info": {
+    "name": "Crypto Clicker",
+    "_postman_id": "crypto-clicker-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrlBackend",
+      "value": "{{baseUrlBackend}}"
+    },
+    {
+      "key": "baseUrlBot",
+      "value": "{{baseUrlBot}}"
+    }
+  ],
+  "item": [
+    {
+      "name": "Backend",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlBackend}}/health-check",
+              "host": ["{{baseUrlBackend}}"],
+              "path": ["health-check"]
+            }
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlBackend}}/version",
+              "host": ["{{baseUrlBackend}}"],
+              "path": ["version"]
+            }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Telegram-Init-Data",
+                "value": "{{telegramInitData}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrlBackend}}/api/me",
+              "host": ["{{baseUrlBackend}}"],
+              "path": ["api", "me"]
+            }
+          }
+        },
+        {
+          "name": "Submit Clicks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Telegram-Init-Data",
+                "value": "{{telegramInitData}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clicks\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrlBackend}}/api/clicks",
+              "host": ["{{baseUrlBackend}}"],
+              "path": ["api", "clicks"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bot",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlBot}}/health-check",
+              "host": ["{{baseUrlBot}}"],
+              "path": ["health-check"]
+            }
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlBot}}/version",
+              "host": ["{{baseUrlBot}}"],
+              "path": ["version"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
