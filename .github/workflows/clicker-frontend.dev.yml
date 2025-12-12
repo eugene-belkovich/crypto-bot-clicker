@@ -18,23 +18,22 @@ jobs:
         with:
           ref: main
 
-      - name: Install Dependencies common
-        run: npm install
-        working-directory: ./common
-
-      - name: Install Dependencies common-ui
-        run: npm install
-        working-directory: ./common-ui
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: clicker-frontend/package-lock.json
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
         working-directory: ./clicker-frontend
 
-      - name: Check build
+      - name: Build
         run: npm run build:dev
         working-directory: ./clicker-frontend
 
-      - name: Check lint rules
+      - name: Lint
         run: npm run lint
         working-directory: ./clicker-frontend
 
@@ -44,5 +43,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: 'crypto-bot-clicker-frontend-dev'
-          directory: clicker-frontend/dist
-          branch: main # target branch
+          directory: clicker-frontend/out
+          branch: main
