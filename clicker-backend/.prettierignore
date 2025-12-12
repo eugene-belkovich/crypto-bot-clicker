@@ -1,0 +1,8 @@
+*.yaml
+*.yml
+*.md
+dist/*
+package.json
+package-lock.json
+yarn.lock
+config/*.json

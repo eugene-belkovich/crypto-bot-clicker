@@ -1,0 +1,50 @@
+import { injectable } from 'inversify';
+import { IUserRepository } from '../interfaces';
+import { IUser, IUserDocument, User } from '../models';
+import { catchAsync } from '../utils';
+
+@injectable()
+export class UserRepository implements IUserRepository {
+  findByTelegramId = catchAsync(async (telegramId: string): Promise<IUserDocument | null> => {
+    return User.findOne({ telegramId });
+  });
+
+  findOrCreateByTelegramId = catchAsync(
+    async (telegramId: string, userData?: Partial<IUser>): Promise<IUserDocument> => {
+      return User.findOneAndUpdate(
+        { telegramId },
+        {
+          $setOnInsert: {
+            telegramId,
+            username: userData?.username || null,
+            firstName: userData?.firstName || null,
+            lastName: userData?.lastName || null,
+            points: 0,
+            level: 1,
+          },
+        },
+        { upsert: true, new: true }
+      );
+    }
+  );
+
+  updatePoints = catchAsync(
+    async (telegramId: string, points: number): Promise<IUserDocument | null> => {
+      return User.findOneAndUpdate({ telegramId }, { $set: { points } }, { new: true });
+    }
+  );
+
+  incrementPoints = catchAsync(
+    async (telegramId: string, amount: number): Promise<IUserDocument | null> => {
+      return User.findOneAndUpdate({ telegramId }, { $inc: { points: amount } }, { new: true });
+    }
+  );
+
+  getLeaderboard = catchAsync(async (limit: number): Promise<IUserDocument[]> => {
+    return User.find().sort({ points: -1 }).limit(limit);
+  });
+
+  findById = catchAsync(async (id: string): Promise<IUserDocument | null> => {
+    return User.findById(id);
+  });
+}
