@@ -25,9 +25,7 @@ body {
 body {
   background-color: var(--tg-bg);
   color: var(--tg-text);
-  font-family:
-    var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Mobile optimizations */

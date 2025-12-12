@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ArrowLeft, Trophy } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import {ArrowLeft, Trophy} from 'lucide-react';
+import Link from 'next/link';
+import {cn} from '@/lib/utils';
 
 interface NavButtonProps {
   href: string;
@@ -10,17 +10,17 @@ interface NavButtonProps {
   className?: string;
 }
 
-function NavButton({ href, children, className }: NavButtonProps) {
+function NavButton({href, children, className}: NavButtonProps) {
   return (
     <Link
       href={href}
       className={cn(
-        "flex items-center justify-center gap-2",
-        "px-6 py-3 rounded-full",
-        "bg-[var(--tg-button,#3b82f6)] text-[var(--tg-button-text,#fff)]",
-        "font-medium transition-transform active:scale-95",
-        "touch-manipulation select-none",
-        className,
+        'flex items-center justify-center gap-2',
+        'px-6 py-3 rounded-full',
+        'bg-[var(--tg-button,#3b82f6)] text-[var(--tg-button-text,#fff)]',
+        'font-medium transition-transform active:scale-95',
+        'touch-manipulation select-none',
+        className
       )}
     >
       {children}

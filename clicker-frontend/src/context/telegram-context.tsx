@@ -1,18 +1,8 @@
-"use client";
+'use client';
 
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import {
-  getTelegramWebApp,
-  type TelegramThemeParams,
-  type TelegramWebApp,
-} from "@/lib/telegram";
-import type { TelegramUser } from "@/types";
+import {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
+import {getTelegramWebApp, type TelegramThemeParams, type TelegramWebApp} from '@/lib/telegram';
+import type {TelegramUser} from '@/types';
 
 interface TelegramContextValue {
   webApp: TelegramWebApp | null;
@@ -25,9 +15,9 @@ interface TelegramContextValue {
 const TelegramContext = createContext<TelegramContextValue>({
   webApp: null,
   user: null,
-  initData: "",
+  initData: '',
   isReady: false,
-  themeParams: {},
+  themeParams: {}
 });
 
 export function useTelegramContext() {
@@ -38,25 +28,25 @@ function applyTelegramTheme(themeParams: TelegramThemeParams) {
   const root = document.documentElement;
 
   if (themeParams.bg_color) {
-    root.style.setProperty("--tg-bg", themeParams.bg_color);
+    root.style.setProperty('--tg-bg', themeParams.bg_color);
   }
   if (themeParams.text_color) {
-    root.style.setProperty("--tg-text", themeParams.text_color);
+    root.style.setProperty('--tg-text', themeParams.text_color);
   }
   if (themeParams.hint_color) {
-    root.style.setProperty("--tg-hint", themeParams.hint_color);
+    root.style.setProperty('--tg-hint', themeParams.hint_color);
   }
   if (themeParams.link_color) {
-    root.style.setProperty("--tg-link", themeParams.link_color);
+    root.style.setProperty('--tg-link', themeParams.link_color);
   }
   if (themeParams.button_color) {
-    root.style.setProperty("--tg-button", themeParams.button_color);
+    root.style.setProperty('--tg-button', themeParams.button_color);
   }
   if (themeParams.button_text_color) {
-    root.style.setProperty("--tg-button-text", themeParams.button_text_color);
+    root.style.setProperty('--tg-button-text', themeParams.button_text_color);
   }
   if (themeParams.secondary_bg_color) {
-    root.style.setProperty("--tg-secondary-bg", themeParams.secondary_bg_color);
+    root.style.setProperty('--tg-secondary-bg', themeParams.secondary_bg_color);
   }
 }
 
@@ -64,13 +54,13 @@ interface TelegramProviderProps {
   children: ReactNode;
 }
 
-export function TelegramProvider({ children }: TelegramProviderProps) {
+export function TelegramProvider({children}: TelegramProviderProps) {
   const [state, setState] = useState<TelegramContextValue>({
     webApp: null,
     user: null,
-    initData: "",
+    initData: '',
     isReady: false,
-    themeParams: {},
+    themeParams: {}
   });
 
   useEffect(() => {
@@ -89,25 +79,21 @@ export function TelegramProvider({ children }: TelegramProviderProps) {
         user: webApp.initDataUnsafe.user || null,
         initData: webApp.initData,
         isReady: true,
-        themeParams: webApp.themeParams,
+        themeParams: webApp.themeParams
       });
     } else {
       // Running outside Telegram (development mode)
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         isReady: true,
         user: {
           id: 12345,
-          first_name: "Dev",
-          username: "developer",
-        },
+          first_name: 'Dev',
+          username: 'developer'
+        }
       }));
     }
   }, []);
 
-  return (
-    <TelegramContext.Provider value={state}>
-      {children}
-    </TelegramContext.Provider>
-  );
+  return <TelegramContext.Provider value={state}>{children}</TelegramContext.Provider>;
 }

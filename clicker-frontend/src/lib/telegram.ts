@@ -1,4 +1,4 @@
-import type { TelegramUser } from "@/types";
+import type {TelegramUser} from '@/types';
 
 export interface TelegramThemeParams {
   bg_color?: string;
@@ -21,7 +21,7 @@ export interface TelegramWebApp {
   expand: () => void;
   close: () => void;
   themeParams: TelegramThemeParams;
-  colorScheme: "light" | "dark";
+  colorScheme: 'light' | 'dark';
   isExpanded: boolean;
   viewportHeight: number;
   viewportStableHeight: number;
@@ -36,11 +36,11 @@ declare global {
 }
 
 export function getTelegramWebApp(): TelegramWebApp | null {
-  if (typeof window === "undefined") return null;
+  if (typeof window === 'undefined') return null;
   return window.Telegram?.WebApp ?? null;
 }
 
 export function isTelegramWebApp(): boolean {
   const webApp = getTelegramWebApp();
-  return webApp !== null && webApp.initData !== "";
+  return webApp !== null && webApp.initData !== '';
 }
