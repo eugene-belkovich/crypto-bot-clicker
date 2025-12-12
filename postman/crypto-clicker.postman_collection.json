@@ -12,6 +12,10 @@
     {
       "key": "baseUrlBot",
       "value": "{{baseUrlBot}}"
+    },
+    {
+      "key": "baseUrlFrontend",
+      "value": "{{baseUrlFrontend}}"
     }
   ],
   "item": [
@@ -50,14 +54,16 @@
               {
                 "key": "X-Telegram-Init-Data",
                 "value": "{{telegramInitData}}",
-                "type": "text"
+                "type": "text",
+                "description": "Telegram WebApp init data. Get it from browser console: window.Telegram.WebApp.initData"
               }
             ],
             "url": {
               "raw": "{{baseUrlBackend}}/api/me",
               "host": ["{{baseUrlBackend}}"],
               "path": ["api", "me"]
-            }
+            },
+            "description": "Get current user data (score and rank).\n\n**Authentication:**\nRequires X-Telegram-Init-Data header with valid Telegram WebApp init data.\n\n**How to get initData:**\n1. Open Mini App in Telegram\n2. Open DevTools (Ctrl+Shift+I)\n3. Run: `copy(window.Telegram.WebApp.initData)`\n4. Paste into telegramInitData environment variable\n\n**Response:**\n```json\n{\n  \"score\": 0,\n  \"rank\": 1\n}\n```\n\n**Errors:**\n- 401 Unauthorized - Missing or invalid X-Telegram-Init-Data header"
           }
         },
         {
@@ -68,7 +74,8 @@
               {
                 "key": "X-Telegram-Init-Data",
                 "value": "{{telegramInitData}}",
-                "type": "text"
+                "type": "text",
+                "description": "Telegram WebApp init data. Get it from browser console: window.Telegram.WebApp.initData"
               },
               {
                 "key": "Content-Type",
@@ -84,6 +91,24 @@
               "raw": "{{baseUrlBackend}}/api/clicks",
               "host": ["{{baseUrlBackend}}"],
               "path": ["api", "clicks"]
+            },
+            "description": "Submit clicks to update user score.\n\n**Authentication:**\nRequires X-Telegram-Init-Data header with valid Telegram WebApp init data.\n\n**Request Body:**\n```json\n{\n  \"clicks\": 10\n}\n```\n\n**Response:**\n```json\n{\n  \"score\": 10,\n  \"rank\": 1\n}\n```\n\n**Errors:**\n- 401 Unauthorized - Missing or invalid X-Telegram-Init-Data header"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Frontend",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlFrontend}}/api/health",
+              "host": ["{{baseUrlFrontend}}"],
+              "path": ["api", "health"]
             }
           }
         }
