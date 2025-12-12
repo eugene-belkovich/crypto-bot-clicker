@@ -6,7 +6,7 @@ export interface IUser {
     username?: string;
     firstName?: string;
     lastName?: string;
-    clicks: number;
+    score: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -33,16 +33,15 @@ const userSchema = new Schema<IUserDocument>(
             type: String,
             default: null,
         },
-        clicks: {
+        score: {
             type: Number,
             default: 0,
+            index: true,
         },
     },
     {
         timestamps: true,
     }
 );
-
-userSchema.index({points: -1});
 
 export const User: Model<IUserDocument> = model<IUserDocument>('User', userSchema);

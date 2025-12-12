@@ -18,4 +18,8 @@ export class UserService implements IUserService {
     ): Promise<IUserDocument> {
         return this.userRepository.findOrCreateByTelegramId(telegramId, userData);
     }
+
+    async incrementScore(telegramId: string, clicks: number): Promise<IUserDocument | null> {
+        return this.userRepository.incrementScore(telegramId, clicks);
+    }
 }
