@@ -14,7 +14,7 @@ const isLocal = nodeEnv === "local";
 export const config = {
   botToken: requireEnv("BOT_TOKEN"),
   miniAppUrl: requireEnv("MINI_APP_URL"),
-  port: parseInt(process.env.APP_PORT || "3000", 10),
+  port: parseInt(process.env.APP_PORT || "3001", 10),
   nodeEnv,
   // Webhook only used on server (non-local mode)
   webhookUrl: isLocal ? undefined : process.env.WEBHOOK_URL,

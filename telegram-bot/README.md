@@ -29,6 +29,6 @@ npm run docker:run
 | -------------- | --------------------------------------------------- |
 | `BOT_TOKEN`    | Telegram bot token from @BotFather                  |
 | `MINI_APP_URL` | URL of your Telegram Mini App                       |
-| `APP_PORT`     | Server port (default: 3000)                         |
+| `APP_PORT`     | Server port (default: 3001)                         |
 | `NODE_ENV`     | Environment: development / production               |
 | `LOG_LEVEL`    | Log level: debug, info, warn, error (default: info) |

@@ -21,6 +21,6 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/out ./out
 COPY image ./image
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["npm", "start"]
