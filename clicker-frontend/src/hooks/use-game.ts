@@ -11,7 +11,9 @@ export function useGame(initData: string) {
   const click = useGameStore(state => state.click);
 
   useEffect(() => {
-    init(initData);
+    if (initData) {
+      init(initData);
+    }
   }, [init, initData]);
 
   return {

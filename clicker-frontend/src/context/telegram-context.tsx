@@ -1,7 +1,7 @@
 'use client';
 
 import {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
-import {getTelegramWebApp, type TelegramThemeParams, type TelegramWebApp} from '@/lib/telegram';
+import {getTelegramWebApp, isTelegramWebApp, type TelegramThemeParams, type TelegramWebApp} from '@/lib/telegram';
 import type {TelegramUser} from '@/types';
 
 interface TelegramContextValue {
@@ -65,13 +65,12 @@ export function TelegramProvider({children}: TelegramProviderProps) {
 
   useEffect(() => {
     const webApp = getTelegramWebApp();
+    const isRealTelegram = isTelegramWebApp();
 
-    if (webApp) {
-      // Initialize Telegram WebApp
+    if (webApp && isRealTelegram) {
+      // Running inside real Telegram WebApp
       webApp.ready();
       webApp.expand();
-
-      // Apply theme
       applyTelegramTheme(webApp.themeParams);
 
       setState({
@@ -82,14 +81,17 @@ export function TelegramProvider({children}: TelegramProviderProps) {
         themeParams: webApp.themeParams
       });
     } else {
-      // Running outside Telegram (development mode)
+      // Development mode - use dev initData from env
+      const devInitData = process.env.NEXT_PUBLIC_DEV_INIT_DATA || '';
+      console.log('[Telegram] Dev mode, initData length:', devInitData.length);
       setState(prev => ({
         ...prev,
+        initData: devInitData,
         isReady: true,
         user: {
-          id: 12345,
-          first_name: 'Dev',
-          username: 'developer'
+          id: 94986611,
+          first_name: 'Eugene',
+          username: 'ffrm4n'
         }
       }));
     }
