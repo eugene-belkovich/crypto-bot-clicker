@@ -1,18 +1,17 @@
-import pino from "pino";
+import pino from 'pino';
 
 const logger = pino({
-  level: process.env.LOG_LEVEL || "info",
-  transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
-      translateTime: "HH:MM:ss",
-      ignore: "pid,hostname",
-    },
-  },
+    level: process.env.LOG_LEVEL || 'info',
+    transport: {
+        target: 'pino-pretty',
+        options: {
+            colorize: true,
+            translateTime: 'HH:MM:ss',
+            ignore: 'pid,hostname'
+        }
+    }
 });
 
-// Redirect all console output via Pino logger
 console.log = logger.info.bind(logger);
 console.info = logger.info.bind(logger);
 console.warn = logger.warn.bind(logger);
