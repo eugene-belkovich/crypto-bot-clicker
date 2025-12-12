@@ -13,4 +13,5 @@ export const config = {
   miniAppUrl: requireEnv("MINI_APP_URL"),
   port: parseInt(process.env.APP_PORT || "3000", 10),
   nodeEnv: process.env.NODE_ENV || "development",
+  webhookUrl: process.env.WEBHOOK_URL,
 };
