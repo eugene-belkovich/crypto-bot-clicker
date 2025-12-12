@@ -5,7 +5,8 @@ import {IUserService} from '../interfaces';
 
 @injectable()
 export class UserController {
-    constructor(@inject(TYPES.UserService) private userService: IUserService) {}
+    constructor(@inject(TYPES.UserService) private userService: IUserService) {
+    }
 
     async getMe(request: FastifyRequest, reply: FastifyReply) {
         const {user} = request.telegramUser;
@@ -16,10 +17,20 @@ export class UserController {
             lastName: user.last_name,
         });
 
-        return reply.send({score: dbUser.score, rank: 1});
+        return reply.send({
+            user: {
+                telegramId: dbUser.telegramId,
+                username: dbUser.username,
+                firstName: dbUser.firstName,
+                lastName: dbUser.lastName,
+                createdAt: dbUser.createdAt,
+                updatedAt: dbUser.updatedAt,
+            },
+            score: dbUser.score
+        });
     }
 
-    async addClicks(request: FastifyRequest<{Body: {clicks: number}}>, reply: FastifyReply) {
+    async addClicks(request: FastifyRequest<{ Body: { clicks: number } }>, reply: FastifyReply) {
         const {user} = request.telegramUser;
         const {clicks} = request.body;
 
