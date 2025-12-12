@@ -1,49 +1,44 @@
 'use client';
 
 import {useState} from 'react';
+import {BottomNavigation, type TabType} from '@/components/navigation';
 import {GameView} from '@/components/views/game-view';
 import {LeaderboardView} from '@/components/views/leaderboard-view';
-import {BottomNavigation, type TabType} from '@/components/navigation';
 import {useGame} from '@/hooks/use-game';
 import {useTelegram} from '@/hooks/use-telegram';
 import {cn} from '@/lib/utils';
 
 export default function Home() {
-    const {initData, user, isReady} = useTelegram();
-    const {score, handleClick} = useGame(initData);
-    const [activeTab, setActiveTab] = useState<TabType>('game');
+  const {initData, user, isReady} = useTelegram();
+  const {score, handleClick} = useGame(initData);
+  const [activeTab, setActiveTab] = useState<TabType>('game');
 
-    if (!isReady) {
-        return (
-            <div
-                className={cn(
-                    'flex h-screen items-center justify-center',
-                    'bg-[var(--tg-bg,#fff)]'
-                )}
-            >
-                <div className="flex flex-col items-center gap-3">
-                    <div
-                        className={cn(
-                            'w-8 h-8 sm:w-10 sm:h-10',
-                            'border-3 border-blue-500 border-t-transparent',
-                            'rounded-full animate-spin'
-                        )}
-                    />
-                    <span className="text-sm sm:text-base text-[var(--tg-hint,#999)]">Loading...</span>
-                </div>
-            </div>
-        );
-    }
-
+  if (!isReady) {
     return (
-        <div className="flex flex-col h-screen w-full bg-[var(--tg-bg,#fff)]">
-            {activeTab === 'game' ? (
-                <GameView score={score} onClick={handleClick} />
-            ) : (
-                <LeaderboardView initData={initData} userId={user?.id} userName={user?.first_name} />
+      <div className={cn('flex h-screen items-center justify-center', 'bg-[var(--tg-bg,#fff)]')}>
+        <div className="flex flex-col items-center gap-3">
+          <div
+            className={cn(
+              'w-8 h-8 sm:w-10 sm:h-10',
+              'border-3 border-blue-500 border-t-transparent',
+              'rounded-full animate-spin'
             )}
-
-            <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          />
+          <span className="text-sm sm:text-base text-[var(--tg-hint,#999)]">Loading...</span>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className="flex flex-col h-screen w-full bg-[var(--tg-bg,#fff)]">
+      {activeTab === 'game' ? (
+        <GameView score={score} onClick={handleClick} />
+      ) : (
+        <LeaderboardView initData={initData} userId={user?.id} userName={user?.first_name} />
+      )}
+
+      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+    </div>
+  );
 }
