@@ -7,6 +7,7 @@ RUN npm ci
 
 COPY src ./src
 COPY tsconfig.json ./
+COPY image ./image
 
 EXPOSE 3000
 
