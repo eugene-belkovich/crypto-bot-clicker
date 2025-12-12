@@ -37,7 +37,7 @@ function generateMockLeaderboard(myScore: number): LeaderboardData {
 
   const top25 = mockUsers.map((user, index) => ({
     rank: index + 1,
-    oduserId: 1000 + index,
+    userId: 1000 + index,
     name: user.name,
     score: user.score
   }));

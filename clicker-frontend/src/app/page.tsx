@@ -6,6 +6,7 @@ import {LeaderboardView} from '@/components/views/leaderboard-view';
 import {BottomNavigation, type TabType} from '@/components/navigation';
 import {useGame} from '@/hooks/use-game';
 import {useTelegram} from '@/hooks/use-telegram';
+import {cn} from '@/lib/utils';
 
 export default function Home() {
     const {initData, user, isReady} = useTelegram();
@@ -14,14 +15,28 @@ export default function Home() {
 
     if (!isReady) {
         return (
-            <div className="flex h-screen items-center justify-center bg-[var(--tg-bg,#fff)]">
-                <div className="text-[var(--tg-hint,#999)]">Loading...</div>
+            <div
+                className={cn(
+                    'flex h-screen items-center justify-center',
+                    'bg-[var(--tg-bg,#fff)]'
+                )}
+            >
+                <div className="flex flex-col items-center gap-3">
+                    <div
+                        className={cn(
+                            'w-8 h-8 sm:w-10 sm:h-10',
+                            'border-3 border-blue-500 border-t-transparent',
+                            'rounded-full animate-spin'
+                        )}
+                    />
+                    <span className="text-sm sm:text-base text-[var(--tg-hint,#999)]">Loading...</span>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col h-screen bg-[var(--tg-bg,#fff)]">
+        <div className="flex flex-col h-screen w-full bg-[var(--tg-bg,#fff)]">
             {activeTab === 'game' ? (
                 <GameView score={score} onClick={handleClick} />
             ) : (

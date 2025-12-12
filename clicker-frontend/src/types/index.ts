@@ -8,7 +8,7 @@ export interface TelegramUser {
 
 export interface LeaderboardEntry {
   rank: number;
-  oduserId: number;
+  userId: number;
   name: string;
   photoUrl?: string;
   score: number;
