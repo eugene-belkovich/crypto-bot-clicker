@@ -2,28 +2,39 @@
   "info": {
     "name": "Crypto Clicker",
     "_postman_id": "crypto-clicker-collection",
+    "description": "API collection for Crypto Clicker - a Telegram Mini App clicker game.\n\n## Sub-projects\n- **Backend**: Fastify API server (port 8080)\n- **Frontend**: Next.js web app (port 3000)\n- **Bot**: Telegram bot service (port 3001)\n\n## Authentication\nProtected endpoints require `X-Telegram-Init-Data` header with valid Telegram WebApp init data.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrlBackend",
-      "value": "{{baseUrlBackend}}"
+      "value": "https://d2ypsdn3rr.us-east-1.awsapprunner.com",
+      "description": "Backend API base URL (DEV)"
     },
     {
       "key": "baseUrlBot",
-      "value": "{{baseUrlBot}}"
+      "value": "https://vdm7k6nxus.us-east-1.awsapprunner.com",
+      "description": "Telegram Bot service base URL (DEV)"
     },
     {
       "key": "baseUrlFrontend",
-      "value": "{{baseUrlFrontend}}"
+      "value": "http://localhost:3000",
+      "description": "Frontend app base URL"
+    },
+    {
+      "key": "telegramInitData",
+      "value": "",
+      "description": "Telegram WebApp init data for authentication"
     }
   ],
   "item": [
     {
       "name": "Backend",
+      "description": "Fastify API server endpoints",
       "item": [
         {
           "name": "Health",
+          "description": "Health check and version endpoints (no auth required)",
           "item": [
             {
               "name": "Health Check",
@@ -34,7 +45,8 @@
                   "raw": "{{baseUrlBackend}}/health-check",
                   "host": ["{{baseUrlBackend}}"],
                   "path": ["health-check"]
-                }
+                },
+                "description": "Check backend service health status.\n\n**Response:**\n```json\n{\n  \"status\": \"ok\",\n  \"timestamp\": \"2025-12-12T10:00:00.000Z\",\n  \"uptime\": 12345.67\n}\n```"
               }
             },
             {
@@ -46,13 +58,15 @@
                   "raw": "{{baseUrlBackend}}/version",
                   "host": ["{{baseUrlBackend}}"],
                   "path": ["version"]
-                }
+                },
+                "description": "Get backend service version information.\n\n**Response:**\n```json\n{\n  \"name\": \"crypto-clicker-backend\",\n  \"version\": \"1.0.0\"\n}\n```"
               }
             }
           ]
         },
         {
           "name": "User",
+          "description": "User profile and score endpoints (requires Telegram auth)",
           "item": [
             {
               "name": "Get Me",
@@ -71,7 +85,7 @@
                   "host": ["{{baseUrlBackend}}"],
                   "path": ["api", "me"]
                 },
-                "description": "Get current user profile and score.\n\n**Response:**\n```json\n{\n  \"user\": {\n    \"telegramId\": \"94986611\",\n    \"username\": \"ffrm4n\",\n    \"firstName\": \"Eugene\",\n    \"lastName\": null,\n    \"createdAt\": \"2024-12-12T10:00:00.000Z\",\n    \"updatedAt\": \"2024-12-12T10:00:00.000Z\"\n  },\n  \"score\": 42\n}\n```"
+                "description": "Get current user profile and score.\n\n**Authentication:** Requires `X-Telegram-Init-Data` header\n\n**Response:**\n```json\n{\n  \"user\": {\n    \"telegramId\": \"94986611\",\n    \"username\": \"ffrm4n\",\n    \"firstName\": \"Eugene\",\n    \"lastName\": null,\n    \"createdAt\": \"2025-12-12T10:00:00.000Z\",\n    \"updatedAt\": \"2025-12-12T10:00:00.000Z\"\n  },\n  \"score\": 42\n}\n```"
               }
             },
             {
@@ -91,13 +105,14 @@
                   "host": ["{{baseUrlBackend}}"],
                   "path": ["api", "score"]
                 },
-                "description": "Get user's total score (clicks count).\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
+                "description": "Get user's total score (clicks count).\n\n**Authentication:** Requires `X-Telegram-Init-Data` header\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
               }
             }
           ]
         },
         {
           "name": "Clicks",
+          "description": "Click tracking endpoints (requires Telegram auth)",
           "item": [
             {
               "name": "Save Clicks",
@@ -118,14 +133,14 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "[\n  {\n    \"timestamp\": \"2024-12-12T10:00:00.000Z\",\n    \"x\": 150,\n    \"y\": 200,\n    \"metadata\": {\n      \"userAgent\": \"Mozilla/5.0\",\n      \"hasTouchEvents\": true,\n      \"timeZone\": \"Europe/Kiev\"\n    }\n  }\n]"
+                  "raw": "[\n  {\n    \"timestamp\": \"2025-12-12T10:00:00.000Z\",\n    \"x\": 150,\n    \"y\": 200,\n    \"metadata\": {\n      \"userAgent\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)\",\n      \"hasTouchEvents\": true,\n      \"hasOrientation\": true,\n      \"hasOrientationEvent\": false,\n      \"hasMotionEvent\": false,\n      \"timeZone\": \"Europe/Kiev\"\n    }\n  },\n  {\n    \"timestamp\": \"2025-12-12T10:00:00.500Z\",\n    \"x\": 155,\n    \"y\": 205\n  }\n]"
                 },
                 "url": {
                   "raw": "{{baseUrlBackend}}/api/clicks",
                   "host": ["{{baseUrlBackend}}"],
                   "path": ["api", "clicks"]
                 },
-                "description": "Save batch of clicks (max 50).\n\n**Request Body:**\n```json\n[\n  {\n    \"timestamp\": \"2024-12-12T10:00:00.000Z\",\n    \"x\": 150,\n    \"y\": 200,\n    \"metadata\": { ... }\n  }\n]\n```\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
+                "description": "Save batch of clicks (max 50 per request).\n\n**Authentication:** Requires `X-Telegram-Init-Data` header\n\n**Validation Rules:**\n- Must be non-empty array\n- Max 50 clicks per request\n- Each click requires: `timestamp`, `x` (number), `y` (number)\n- `metadata` is optional\n\n**Request Body:**\n```json\n[\n  {\n    \"timestamp\": \"2025-12-12T10:00:00.000Z\",\n    \"x\": 150,\n    \"y\": 200,\n    \"metadata\": {\n      \"userAgent\": \"Mozilla/5.0...\",\n      \"hasTouchEvents\": true,\n      \"hasOrientation\": true,\n      \"hasOrientationEvent\": false,\n      \"hasMotionEvent\": false,\n      \"timeZone\": \"Europe/Kiev\"\n    }\n  }\n]\n```\n\n**Metadata fields (all optional):**\n- `userAgent`: Browser/device user agent string\n- `hasTouchEvents`: Device supports touch\n- `hasOrientation`: Device has orientation sensor\n- `hasOrientationEvent`: Device fires orientation events\n- `hasMotionEvent`: Device fires motion events\n- `timeZone`: User's timezone\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
               }
             }
           ]
@@ -133,24 +148,8 @@
       ]
     },
     {
-      "name": "Frontend",
-      "item": [
-        {
-          "name": "Health Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrlFrontend}}/api/health",
-              "host": ["{{baseUrlFrontend}}"],
-              "path": ["api", "health"]
-            }
-          }
-        }
-      ]
-    },
-    {
       "name": "Bot",
+      "description": "Telegram bot service endpoints",
       "item": [
         {
           "name": "Health Check",
@@ -161,7 +160,8 @@
               "raw": "{{baseUrlBot}}/health-check",
               "host": ["{{baseUrlBot}}"],
               "path": ["health-check"]
-            }
+            },
+            "description": "Check Telegram bot service health status.\n\n**Response:** `OK` (plain text)"
           }
         },
         {
@@ -173,7 +173,40 @@
               "raw": "{{baseUrlBot}}/version",
               "host": ["{{baseUrlBot}}"],
               "path": ["version"]
-            }
+            },
+            "description": "Get Telegram bot service version information.\n\n**Response:**\n```json\n{\n  \"name\": \"crypto-clicker-bot\",\n  \"version\": \"1.0.0\"\n}\n```"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Frontend",
+      "description": "Next.js frontend app endpoints",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlFrontend}}/api/health-check",
+              "host": ["{{baseUrlFrontend}}"],
+              "path": ["api", "health-check"]
+            },
+            "description": "Check frontend service health status.\n\n**Response:**\n```json\n{\n  \"status\": \"ok\",\n  \"timestamp\": \"2025-12-12T10:00:00.000Z\",\n  \"uptime\": 12345.67\n}\n```"
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlFrontend}}/api/version",
+              "host": ["{{baseUrlFrontend}}"],
+              "path": ["api", "version"]
+            },
+            "description": "Get frontend service version information.\n\n**Response:**\n```json\n{\n  \"name\": \"clicker-frontend\",\n  \"version\": \"0.0.1\"\n}\n```"
           }
         }
       ]
