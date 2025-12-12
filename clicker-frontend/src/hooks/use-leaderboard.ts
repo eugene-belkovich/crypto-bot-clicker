@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import {useCallback, useEffect, useRef, useState} from "react";
-import {api} from "@/lib/api";
-import type {LeaderboardData} from "@/types";
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {api} from '@/lib/api';
+import type {LeaderboardData} from '@/types';
 
 const AUTO_REFRESH_INTERVAL_MS = 10000;
 
@@ -22,7 +22,7 @@ export function useLeaderboard(initData: string) {
             }
         } catch {
             if (isMountedRef.current) {
-                setError("Failed to load leaderboard");
+                setError('Failed to load leaderboard');
             }
         } finally {
             if (isMountedRef.current) {
@@ -52,6 +52,6 @@ export function useLeaderboard(initData: string) {
         data,
         isLoading,
         error,
-        refresh: fetchLeaderboard,
+        refresh: fetchLeaderboard
     };
 }

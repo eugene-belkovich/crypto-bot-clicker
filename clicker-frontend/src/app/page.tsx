@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import {ClickButton} from "@/components/click-button";
-import {LeaderboardButton} from "@/components/navigation";
-import {ScoreDisplay} from "@/components/score-display";
-import {useGame} from "@/hooks/use-game";
-import {useTelegram} from "@/hooks/use-telegram";
+import {ClickButton} from '@/components/click-button';
+import {LeaderboardButton} from '@/components/navigation';
+import {ScoreDisplay} from '@/components/score-display';
+import {useGame} from '@/hooks/use-game';
+import {useTelegram} from '@/hooks/use-telegram';
 
 export default function Home() {
     const {initData, isReady} = useTelegram();
