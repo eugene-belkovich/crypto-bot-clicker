@@ -1,10 +1,9 @@
 {
-  "app": {
-    "name": "clicker-backend",
-    "version": "1.0.0"
-  },
-  "game": {
-    "pointsPerClick": 1,
-    "maxLevel": 100
-  }
+    "app": {
+        "name": "clicker-backend",
+        "version": "1.0.0"
+    },
+    "game": {
+        "pointsPerClick": 1
+    }
 }
