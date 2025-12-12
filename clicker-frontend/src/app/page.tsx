@@ -1,6 +1,7 @@
 "use client";
 
 import {ClickButton} from "@/components/click-button";
+import {LeaderboardButton} from "@/components/navigation";
 import {ScoreDisplay} from "@/components/score-display";
 import {useGame} from "@/hooks/use-game";
 import {useTelegram} from "@/hooks/use-telegram";
@@ -23,6 +24,10 @@ export default function Home() {
 
             <div className="flex-1 flex items-center justify-center">
                 <ClickButton onClick={handleClick} />
+            </div>
+
+            <div className="p-6 flex justify-center">
+                <LeaderboardButton />
             </div>
         </div>
     );
