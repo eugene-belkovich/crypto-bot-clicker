@@ -13,7 +13,7 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-ENV NODE_ENV=production
+# NODE_ENV should be set in App Runner environment variables (development)
 
 COPY package*.json ./
 RUN npm ci --omit=dev

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
+    "dev": "NODE_ENV=local nodemon src/server.ts",
     "debug": "nodemon --inspect=9229 src/server.ts",
     "start": "node dist/src/server.js",
     "build": "rimraf dist && tsc -p ./tsconfig.json",
