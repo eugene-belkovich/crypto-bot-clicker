@@ -4,15 +4,18 @@ import {useState} from 'react';
 import {cn} from '@/lib/utils';
 
 interface ClickButtonProps {
-  onClick: () => void;
+  onClick: (x: number, y: number) => void;
 }
 
 export function ClickButton({onClick}: ClickButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
 
-  const handlePointerDown = () => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
     setIsPressed(true);
-    onClick();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.round(e.clientX - rect.left);
+    const y = Math.round(e.clientY - rect.top);
+    onClick(x, y);
   };
 
   const handlePointerUp = () => {

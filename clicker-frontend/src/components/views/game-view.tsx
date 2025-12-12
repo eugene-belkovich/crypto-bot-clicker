@@ -6,7 +6,7 @@ import {cn} from '@/lib/utils';
 
 interface GameViewProps {
   score: number;
-  onClick: () => void;
+  onClick: (x: number, y: number) => void;
 }
 
 export function GameView({score, onClick}: GameViewProps) {

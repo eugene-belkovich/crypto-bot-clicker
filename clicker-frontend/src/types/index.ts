@@ -6,6 +6,26 @@ export interface TelegramUser {
   photo_url?: string;
 }
 
+export interface ClickMetadata {
+  userAgent?: string;
+  hasTouchEvents?: boolean;
+  hasOrientation?: boolean;
+  hasOrientationEvent?: boolean;
+  hasMotionEvent?: boolean;
+  timeZone?: string;
+}
+
+export interface ClickData {
+  timestamp: string;
+  x: number;
+  y: number;
+  metadata?: ClickMetadata;
+}
+
+export interface ClickResponse {
+  score: number;
+}
+
 export interface LeaderboardEntry {
   rank: number;
   userId: number;
@@ -20,19 +40,14 @@ export interface LeaderboardData {
   myScore: number;
 }
 
-export interface GameState {
-  localScore: number;
-  serverScore: number;
-  pendingClicks: number;
-  isSyncing: boolean;
-}
-
-export interface ClickResponse {
-  score: number;
-  rank: number;
-}
-
 export interface UserData {
+  user: {
+    telegramId: string;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   score: number;
-  rank: number;
 }
