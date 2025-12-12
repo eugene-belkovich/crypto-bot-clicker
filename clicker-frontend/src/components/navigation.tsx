@@ -50,7 +50,7 @@ export function BottomNavigation({activeTab, onTabChange}: BottomNavigationProps
       className="bg-white border-t border-gray-100 shrink-0"
       style={{paddingBottom: 'env(safe-area-inset-bottom, 0px)'}}
     >
-      <div className="flex items-center justify-around max-w-md mx-auto">
+      <div className="flex items-center justify-around w-full">
         <NavItem
           icon={<Gamepad2 className="w-full h-full" />}
           label="Game"
