@@ -5,8 +5,7 @@ import {IUserDocument} from '../models';
 
 @injectable()
 export class UserService implements IUserService {
-    constructor(@inject(TYPES.UserRepository) private userRepository: IUserRepository) {
-    }
+    constructor(@inject(TYPES.UserRepository) private userRepository: IUserRepository) {}
 
     async getUser(telegramId: string): Promise<IUserDocument | null> {
         return this.userRepository.findByTelegramId(telegramId);
@@ -14,12 +13,8 @@ export class UserService implements IUserService {
 
     async getOrCreateUser(
         telegramId: string,
-        userData?: { username?: string; firstName?: string; lastName?: string }
+        userData?: {username?: string; firstName?: string; lastName?: string}
     ): Promise<IUserDocument> {
         return this.userRepository.findOrCreateByTelegramId(telegramId, userData);
-    }
-
-    async incrementScore(telegramId: string, clicks: number): Promise<IUserDocument | null> {
-        return this.userRepository.incrementScore(telegramId, clicks);
     }
 }

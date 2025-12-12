@@ -10,5 +10,5 @@ export async function userRoutes(fastify: FastifyInstance) {
     fastify.addHook('preHandler', telegramAuthMiddleware);
 
     fastify.get('/me', userController.getMe.bind(userController));
-    fastify.post('/clicks', userController.addClicks.bind(userController));
+    fastify.get('/score', userController.getScore.bind(userController));
 }

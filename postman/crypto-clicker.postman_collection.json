@@ -23,77 +23,112 @@
       "name": "Backend",
       "item": [
         {
-          "name": "Health Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrlBackend}}/health-check",
-              "host": ["{{baseUrlBackend}}"],
-              "path": ["health-check"]
-            }
-          }
-        },
-        {
-          "name": "Version",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrlBackend}}/version",
-              "host": ["{{baseUrlBackend}}"],
-              "path": ["version"]
-            }
-          }
-        },
-        {
-          "name": "Get Me",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-Telegram-Init-Data",
-                "value": "{{telegramInitData}}",
-                "type": "text",
-                "description": "Telegram WebApp init data. Get it from browser console: window.Telegram.WebApp.initData"
+          "name": "Health",
+          "item": [
+            {
+              "name": "Health Check",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrlBackend}}/health-check",
+                  "host": ["{{baseUrlBackend}}"],
+                  "path": ["health-check"]
+                }
               }
-            ],
-            "url": {
-              "raw": "{{baseUrlBackend}}/api/me",
-              "host": ["{{baseUrlBackend}}"],
-              "path": ["api", "me"]
             },
-            "description": "Get current user data (score and rank).\n\n**Authentication:**\nRequires X-Telegram-Init-Data header with valid Telegram WebApp init data.\n\n**How to get initData:**\n1. Open Mini App in Telegram\n2. Open DevTools (Ctrl+Shift+I)\n3. Run: `copy(window.Telegram.WebApp.initData)`\n4. Paste into telegramInitData environment variable\n\n**Response:**\n```json\n{\n  \"score\": 0,\n  \"rank\": 1\n}\n```\n\n**Errors:**\n- 401 Unauthorized - Missing or invalid X-Telegram-Init-Data header"
-          }
+            {
+              "name": "Version",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrlBackend}}/version",
+                  "host": ["{{baseUrlBackend}}"],
+                  "path": ["version"]
+                }
+              }
+            }
+          ]
         },
         {
-          "name": "Submit Clicks",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Telegram-Init-Data",
-                "value": "{{telegramInitData}}",
-                "type": "text",
-                "description": "Telegram WebApp init data. Get it from browser console: window.Telegram.WebApp.initData"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+          "name": "User",
+          "item": [
+            {
+              "name": "Get Me",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Telegram-Init-Data",
+                    "value": "{{telegramInitData}}",
+                    "type": "text",
+                    "description": "Telegram WebApp init data"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrlBackend}}/api/me",
+                  "host": ["{{baseUrlBackend}}"],
+                  "path": ["api", "me"]
+                },
+                "description": "Get current user profile and score.\n\n**Response:**\n```json\n{\n  \"user\": {\n    \"telegramId\": \"94986611\",\n    \"username\": \"ffrm4n\",\n    \"firstName\": \"Eugene\",\n    \"lastName\": null,\n    \"createdAt\": \"2024-12-12T10:00:00.000Z\",\n    \"updatedAt\": \"2024-12-12T10:00:00.000Z\"\n  },\n  \"score\": 42\n}\n```"
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"clicks\": 10\n}"
             },
-            "url": {
-              "raw": "{{baseUrlBackend}}/api/clicks",
-              "host": ["{{baseUrlBackend}}"],
-              "path": ["api", "clicks"]
-            },
-            "description": "Submit clicks to update user score.\n\n**Authentication:**\nRequires X-Telegram-Init-Data header with valid Telegram WebApp init data.\n\n**Request Body:**\n```json\n{\n  \"clicks\": 10\n}\n```\n\n**Response:**\n```json\n{\n  \"score\": 10,\n  \"rank\": 1\n}\n```\n\n**Errors:**\n- 401 Unauthorized - Missing or invalid X-Telegram-Init-Data header"
-          }
+            {
+              "name": "Get Score",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Telegram-Init-Data",
+                    "value": "{{telegramInitData}}",
+                    "type": "text",
+                    "description": "Telegram WebApp init data"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrlBackend}}/api/score",
+                  "host": ["{{baseUrlBackend}}"],
+                  "path": ["api", "score"]
+                },
+                "description": "Get user's total score (clicks count).\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Clicks",
+          "item": [
+            {
+              "name": "Save Clicks",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Telegram-Init-Data",
+                    "value": "{{telegramInitData}}",
+                    "type": "text",
+                    "description": "Telegram WebApp init data"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"timestamp\": \"2024-12-12T10:00:00.000Z\",\n    \"x\": 150,\n    \"y\": 200,\n    \"metadata\": {\n      \"userAgent\": \"Mozilla/5.0\",\n      \"hasTouchEvents\": true,\n      \"timeZone\": \"Europe/Kiev\"\n    }\n  }\n]"
+                },
+                "url": {
+                  "raw": "{{baseUrlBackend}}/api/clicks",
+                  "host": ["{{baseUrlBackend}}"],
+                  "path": ["api", "clicks"]
+                },
+                "description": "Save batch of clicks (max 50).\n\n**Request Body:**\n```json\n[\n  {\n    \"timestamp\": \"2024-12-12T10:00:00.000Z\",\n    \"x\": 150,\n    \"y\": 200,\n    \"metadata\": { ... }\n  }\n]\n```\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
+              }
+            }
+          ]
         }
       ]
     },

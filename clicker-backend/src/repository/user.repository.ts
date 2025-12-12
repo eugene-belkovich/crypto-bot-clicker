@@ -19,20 +19,9 @@ export class UserRepository implements IUserRepository {
                         username: userData?.username || null,
                         firstName: userData?.firstName || null,
                         lastName: userData?.lastName || null,
-                        score: 0,
                     },
                 },
                 {upsert: true, new: true}
-            );
-        }
-    );
-
-    incrementScore = catchAsync(
-        async (telegramId: string, clicks: number): Promise<IUserDocument | null> => {
-            return User.findOneAndUpdate(
-                {telegramId},
-                {$inc: {score: clicks}},
-                {new: true}
             );
         }
     );

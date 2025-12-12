@@ -1,11 +1,14 @@
 import {inject, injectable} from 'inversify';
 import {FastifyReply, FastifyRequest} from 'fastify';
 import {TYPES} from '../types/di.types';
-import {IUserService} from '../interfaces';
+import {IClickService, IUserService} from '../interfaces';
 
 @injectable()
 export class UserController {
-    constructor(@inject(TYPES.UserService) private userService: IUserService) {
+    constructor(
+        @inject(TYPES.UserService) private userService: IUserService,
+        @inject(TYPES.ClickService) private clickService: IClickService
+    ) {
     }
 
     async getMe(request: FastifyRequest, reply: FastifyReply) {
@@ -17,6 +20,8 @@ export class UserController {
             lastName: user.last_name,
         });
 
+        const score = await this.clickService.getScore(String(user.id));
+
         return reply.send({
             user: {
                 telegramId: dbUser.telegramId,
@@ -26,23 +31,15 @@ export class UserController {
                 createdAt: dbUser.createdAt,
                 updatedAt: dbUser.updatedAt,
             },
-            score: dbUser.score
+            score,
         });
     }
 
-    async addClicks(request: FastifyRequest<{ Body: { clicks: number } }>, reply: FastifyReply) {
+    async getScore(request: FastifyRequest, reply: FastifyReply) {
         const {user} = request.telegramUser;
-        const {clicks} = request.body;
 
-        if (typeof clicks !== 'number' || clicks <= 0) {
-            return reply.status(400).send({error: 'Invalid clicks'});
-        }
+        const score = await this.clickService.getScore(String(user.id));
 
-        const dbUser = await this.userService.incrementScore(String(user.id), clicks);
-        if (!dbUser) {
-            return reply.status(404).send({error: 'User not found'});
-        }
-
-        return reply.send({score: dbUser.score, rank: 1});
+        return reply.send({score});
     }
 }
