@@ -10,7 +10,16 @@ export interface TelegramThemeParams {
   secondary_bg_color?: string;
 }
 
-export type TelegramPlatform = 'ios' | 'android' | 'android_x' | 'tdesktop' | 'macos' | 'weba' | 'webk' | 'unigram' | 'unknown';
+export type TelegramPlatform =
+  | 'ios'
+  | 'android'
+  | 'android_x'
+  | 'tdesktop'
+  | 'macos'
+  | 'weba'
+  | 'webk'
+  | 'unigram'
+  | 'unknown';
 
 export interface TelegramWebApp {
   initData: string;

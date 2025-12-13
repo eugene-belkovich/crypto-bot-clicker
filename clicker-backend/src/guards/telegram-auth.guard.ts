@@ -1,5 +1,9 @@
-import {FastifyReply, FastifyRequest} from 'fastify';
+import {FastifyRequest} from 'fastify';
 import {isInitDataValid, ParsedInitData, parseInitData} from '../utils';
+import {container} from '../di-container';
+import {IUserRepository} from '../interfaces';
+import {TYPES} from '../types/di.types';
+import {BannedError, UnauthorizedError} from '../errors';
 
 declare module 'fastify' {
     interface FastifyRequest {
@@ -7,16 +11,23 @@ declare module 'fastify' {
     }
 }
 
-export async function telegramAuthGuard(request: FastifyRequest, reply: FastifyReply) {
+export async function telegramAuthGuard(request: FastifyRequest) {
     const initData = request.headers['x-telegram-init-data'] as string;
 
     if (!initData || !isInitDataValid(initData)) {
-        return reply.status(401).send({error: 'Unauthorized'});
+        throw new UnauthorizedError();
     }
 
     const parsed = parseInitData(initData);
     if (!parsed) {
-        return reply.status(401).send({error: 'Invalid init data'});
+        throw new UnauthorizedError('Invalid init data');
+    }
+
+    // Check if user is banned
+    const userRepository = container.get<IUserRepository>(TYPES.UserRepository);
+    const user = await userRepository.findByTelegramId(String(parsed.user.id));
+    if (user?.isBanned) {
+        throw new BannedError(user.banReason);
     }
 
     request.telegramUser = parsed;

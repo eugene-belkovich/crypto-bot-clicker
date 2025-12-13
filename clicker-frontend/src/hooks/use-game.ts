@@ -7,6 +7,8 @@ export function useGame(initData: string) {
   const score = useGameStore(state => state.score);
   const isSyncing = useGameStore(state => state.isSyncing);
   const isLoaded = useGameStore(state => state.isLoaded);
+  const isBanned = useGameStore(state => state.isBanned);
+  const banReason = useGameStore(state => state.banReason);
   const init = useGameStore(state => state.init);
   const click = useGameStore(state => state.click);
   const flushClicks = useGameStore(state => state.flushClicks);
@@ -21,6 +23,8 @@ export function useGame(initData: string) {
     score,
     isSyncing,
     isLoaded,
+    isBanned,
+    banReason,
     handleClick: click,
     flushClicks
   };

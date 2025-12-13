@@ -1,10 +1,11 @@
 'use client';
 
-import {useState, useCallback} from 'react';
+import {useCallback, useState} from 'react';
 import {BottomNavigation, type TabType} from '@/components/navigation';
 import {GameView} from '@/components/views/game-view';
 import {LeaderboardView} from '@/components/views/leaderboard-view';
-import {MobileOnlyScreen} from '@/components/mobile-only-screen';
+import {MobileOnlyView} from '@/components/views/mobile-only-view';
+import {BanView} from '@/components/views/ban-view';
 import {useGame} from '@/hooks/use-game';
 import {useTelegram} from '@/hooks/use-telegram';
 import {cn} from '@/lib/utils';
@@ -14,7 +15,7 @@ const BOT_URL = process.env.NEXT_PUBLIC_BOT_URL || '';
 
 export default function Home() {
   const {initData, user, isReady, platform, isMobile} = useTelegram();
-  const {score, handleClick, flushClicks} = useGame(initData);
+  const {score, handleClick, flushClicks, isBanned, banReason} = useGame(initData);
   const [activeTab, setActiveTab] = useState<TabType>('game');
 
   const handleTabChange = useCallback(
@@ -45,7 +46,11 @@ export default function Home() {
   }
 
   if (PLATFORM_LOCK && !isMobile) {
-    return <MobileOnlyScreen platform={platform} botUrl={BOT_URL} />;
+    return <MobileOnlyView platform={platform} botUrl={BOT_URL} />;
+  }
+
+  if (isBanned) {
+    return <BanView reason={banReason} />;
   }
 
   return (

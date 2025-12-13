@@ -8,7 +8,7 @@ import sensible from '@fastify/sensible';
 
 import {connectToDatabase} from './config';
 import {registerRoutes} from './routes';
-import {ApplicationError, ValidationError} from './errors';
+import {ApplicationError, BannedError, ValidationError} from './errors';
 import {logger} from './utils';
 
 dotenv.config();
@@ -44,6 +44,14 @@ async function bootstrap() {
                     error: 'Validation Error',
                     message: error.message,
                     errors: error.errors,
+                });
+            }
+
+            if (error instanceof BannedError) {
+                return reply.status(403).send({
+                    error: error.message,
+                    banned: true,
+                    banReason: error.reason,
                 });
             }
 

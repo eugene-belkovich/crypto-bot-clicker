@@ -55,3 +55,13 @@ export class RepositoryError extends ApplicationError {
     super(message, statusCode);
   }
 }
+
+export class BannedError extends ApplicationError {
+  public readonly banned = true;
+  public readonly reason?: string;
+
+  constructor(reason?: string) {
+    super(reason || 'Account suspended', 403);
+    this.reason = reason;
+  }
+}

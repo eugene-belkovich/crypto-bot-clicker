@@ -9,4 +9,6 @@ export interface IUserRepository {
     findById(id: string): Promise<IUserDocument | null>;
 
     incrementScore(telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null>;
+
+    banUser(telegramId: string, reason: string): Promise<IUserDocument | null>;
 }

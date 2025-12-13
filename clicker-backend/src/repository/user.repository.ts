@@ -43,4 +43,20 @@ export class UserRepository implements IUserRepository {
             );
         }
     );
+
+    banUser = catchError(
+        async (telegramId: string, reason: string): Promise<IUserDocument | null> => {
+            return User.findOneAndUpdate(
+                {telegramId},
+                {
+                    $set: {
+                        isBanned: true,
+                        bannedAt: new Date(),
+                        banReason: reason,
+                    },
+                },
+                {new: true}
+            );
+        }
+    );
 }

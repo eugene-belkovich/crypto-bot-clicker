@@ -7,6 +7,9 @@ export interface IUser {
     firstName?: string;
     lastName?: string;
     score: number;
+    isBanned: boolean;
+    bannedAt?: Date;
+    banReason?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -36,6 +39,16 @@ const userSchema = new Schema<IUserDocument>(
             type: Number,
             default: 0,
             index: true,
+        },
+        isBanned: {
+            type: Boolean,
+            default: false,
+        },
+        bannedAt: {
+            type: Date,
+        },
+        banReason: {
+            type: String,
         },
     },
     {

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {debounce} from 'lodash-es';
 import {create} from 'zustand';
 import {api} from '@/lib/api';
@@ -13,6 +14,8 @@ interface GameState {
   clicksBuffer: ClickData[];
   metadata: ClickMetadata;
   initData: string;
+  isBanned: boolean;
+  banReason?: string;
 }
 
 interface GameActions {
@@ -48,6 +51,8 @@ export const useGameStore = create<GameStore>((set, get) => {
     clicksBuffer: [],
     metadata: {},
     initData: '',
+    isBanned: false,
+    banReason: undefined,
 
     init: async (initData: string) => {
       const {initData: currentInitData} = get();
@@ -62,17 +67,26 @@ export const useGameStore = create<GameStore>((set, get) => {
         // Account for any clicks made while fetching
         const {clicksBuffer} = get();
         set({score: serverScore + clicksBuffer.length, isLoaded: true});
-      } catch {
-        // On error, keep pending clicks as score
+      } catch (error) {
+        // Check if banned
+        if (axios.isAxiosError(error) && error.response?.status === 403 && error.response?.data?.banned) {
+          set({
+            isBanned: true,
+            banReason: error.response.data.banReason || error.response.data.error,
+            isLoaded: true
+          });
+          return;
+        }
+        // On other errors, keep pending clicks as score
         const {clicksBuffer} = get();
         set({score: clicksBuffer.length, isLoaded: true});
       }
     },
 
     syncClicks: async () => {
-      const {clicksBuffer, initData, isSyncing} = get();
+      const {clicksBuffer, initData, isSyncing, isBanned} = get();
 
-      if (clicksBuffer.length === 0 || isSyncing) return;
+      if (clicksBuffer.length === 0 || isSyncing || isBanned) return;
 
       const clicksToSync = clicksBuffer.slice(0, MAX_BATCH_SIZE);
       const remaining = clicksBuffer.slice(MAX_BATCH_SIZE);
@@ -83,15 +97,28 @@ export const useGameStore = create<GameStore>((set, get) => {
         const response = await api.submitClicks(clicksToSync, initData);
         const {clicksBuffer: pending} = get();
         set({score: response.score + pending.length, isSyncing: false});
-      } catch {
-        // Restore clicks on error
+      } catch (error) {
+        // Check if banned (403 with banned flag)
+        if (axios.isAxiosError(error) && error.response?.status === 403 && error.response?.data?.banned) {
+          set({
+            isBanned: true,
+            banReason: error.response.data.banReason || error.response.data.error,
+            isSyncing: false,
+            clicksBuffer: []
+          });
+          return;
+        }
+        // Restore clicks on other errors
         const {clicksBuffer: pending} = get();
         set({clicksBuffer: [...clicksToSync, ...pending], isSyncing: false});
       }
     },
 
     click: (x: number, y: number) => {
-      const {clicksBuffer, metadata, score} = get();
+      const {clicksBuffer, metadata, score, isBanned} = get();
+
+      // Don't register clicks if banned
+      if (isBanned) return;
 
       const clickData: ClickData = {
         timestamp: new Date().toISOString(),
