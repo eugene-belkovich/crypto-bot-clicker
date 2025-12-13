@@ -2,11 +2,11 @@ import {injectable} from 'inversify';
 import {ClientSession} from 'mongoose';
 import {ClickData, IClickRepository} from '../interfaces';
 import {Click, IClickDocument} from '../models';
-import {catchAsync} from '../utils';
+import {catchError} from '../errors';
 
 @injectable()
 export class ClickRepository implements IClickRepository {
-    saveClicks = catchAsync(
+    saveClicks = catchError(
         async (userId: string, clicks: ClickData[], session?: ClientSession): Promise<IClickDocument[]> => {
             const clickDocs = clicks.map((click) => ({
                 userId,
@@ -20,7 +20,7 @@ export class ClickRepository implements IClickRepository {
         }
     );
 
-    getScoreByUserId = catchAsync(async (userId: string): Promise<number> => {
+    getScoreByUserId = catchError(async (userId: string): Promise<number> => {
         return Click.countDocuments({userId});
     });
 }

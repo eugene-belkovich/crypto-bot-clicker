@@ -2,15 +2,15 @@ import {injectable} from 'inversify';
 import {ClientSession} from 'mongoose';
 import {IUserRepository} from '../interfaces';
 import {IUser, IUserDocument, User} from '../models';
-import {catchAsync} from '../utils';
+import {catchError} from '../errors';
 
 @injectable()
 export class UserRepository implements IUserRepository {
-    findByTelegramId = catchAsync(async (telegramId: string): Promise<IUserDocument | null> => {
+    findByTelegramId = catchError(async (telegramId: string): Promise<IUserDocument | null> => {
         return User.findOne({telegramId});
     });
 
-    findOrCreateByTelegramId = catchAsync(
+    findOrCreateByTelegramId = catchError(
         async (telegramId: string, userData?: Partial<IUser>): Promise<IUserDocument> => {
             return User.findOneAndUpdate(
                 {telegramId},
@@ -27,17 +27,13 @@ export class UserRepository implements IUserRepository {
         }
     );
 
-    findById = catchAsync(async (id: string): Promise<IUserDocument | null> => {
+    findById = catchError(async (id: string): Promise<IUserDocument | null> => {
         return User.findById(id);
     });
 
-    incrementScore = catchAsync(
+    incrementScore = catchError(
         async (telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null> => {
-            return User.findOneAndUpdate(
-                {telegramId},
-                {$inc: {score: amount}},
-                {new: true, session}
-            );
+            return User.findOneAndUpdate({telegramId}, {$inc: {score: amount}}, {new: true, session});
         }
     );
 }
