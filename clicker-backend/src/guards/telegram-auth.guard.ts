@@ -1,5 +1,5 @@
 import {FastifyReply, FastifyRequest} from 'fastify';
-import {isInitDataValid, parseInitData, ParsedInitData} from '../utils';
+import {isInitDataValid, ParsedInitData, parseInitData} from '../utils';
 
 declare module 'fastify' {
     interface FastifyRequest {
@@ -7,7 +7,7 @@ declare module 'fastify' {
     }
 }
 
-export async function telegramAuthMiddleware(request: FastifyRequest, reply: FastifyReply) {
+export async function telegramAuthGuard(request: FastifyRequest, reply: FastifyReply) {
     const initData = request.headers['x-telegram-init-data'] as string;
 
     if (!initData || !isInitDataValid(initData)) {

@@ -2,12 +2,12 @@ import {FastifyInstance} from 'fastify';
 import {container} from '../di-container';
 import {TYPES} from '../types/di.types';
 import {ClickController} from '../controllers';
-import {telegramAuthMiddleware} from '../middlewares';
+import {telegramAuthGuard} from '../guards';
 
 export async function clickRoutes(fastify: FastifyInstance) {
     const clickController = container.get<ClickController>(TYPES.ClickController);
 
-    fastify.addHook('preHandler', telegramAuthMiddleware);
+    fastify.addHook('preHandler', telegramAuthGuard);
 
     fastify.post('/', clickController.saveClicks.bind(clickController));
 }

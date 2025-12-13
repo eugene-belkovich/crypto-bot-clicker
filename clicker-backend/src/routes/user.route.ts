@@ -2,12 +2,12 @@ import {FastifyInstance} from 'fastify';
 import {container} from '../di-container';
 import {TYPES} from '../types/di.types';
 import {UserController} from '../controllers';
-import {telegramAuthMiddleware} from '../middlewares';
+import {telegramAuthGuard} from '../guards';
 
 export async function userRoutes(fastify: FastifyInstance) {
     const userController = container.get<UserController>(TYPES.UserController);
 
-    fastify.addHook('preHandler', telegramAuthMiddleware);
+    fastify.addHook('preHandler', telegramAuthGuard);
 
     fastify.get('/me', userController.getMe.bind(userController));
     fastify.get('/score', userController.getScore.bind(userController));
