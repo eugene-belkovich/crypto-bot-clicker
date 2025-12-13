@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "crypto-clicker-bot",
+    "port": 3001
+  },
+  "miniApp": {
+    "url": "https://crypto-bot-clicker-frontend-dev.pages.dev/"
+  },
+  "webhook": {
+    "url": "https://vdm7k6nxus.us-east-1.awsapprunner.com"
+  },
+  "logging": {
+    "level": "info"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "crypto-clicker-bot",
+    "port": 3001
+  },
+  "miniApp": {
+    "url": "http://localhost:3000"
+  },
+  "webhook": {
+    "url": ""
+  },
+  "logging": {
+    "level": "debug"
+  }
+}
