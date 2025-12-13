@@ -42,6 +42,7 @@ export function GameView({score, onClick}: GameViewProps) {
   };
 
   const handleTouch = (e: TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
     const touch = e.touches[0];
     if (touch) {
       onClick(touch.clientX, touch.clientY);
