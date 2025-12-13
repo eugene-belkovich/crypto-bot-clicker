@@ -1,5 +1,5 @@
-import localConfig from '../../config/local.json';
 import developmentConfig from '../../config/development.json';
+import localConfig from '../../config/local.json';
 
 type EnvironmentConfig = typeof localConfig;
 
