@@ -33,26 +33,33 @@ function getInitials(entry: LeaderboardEntry): string {
 function getRankStyle(rank: number): {badge: string; row: string} {
   if (rank === 1) {
     return {
-      badge: 'bg-gradient-to-br from-yellow-400 to-amber-500 text-white',
-      row: 'bg-amber-50'
+      badge: 'bg-gradient-to-br from-yellow-400 to-amber-500',
+      row: 'bg-yellow-500/10'
     };
   }
   if (rank === 2) {
     return {
-      badge: 'bg-gradient-to-br from-gray-300 to-gray-400 text-gray-700',
-      row: 'bg-gray-50'
+      badge: 'bg-gradient-to-br from-gray-300 to-gray-400',
+      row: 'bg-gray-500/10'
     };
   }
   if (rank === 3) {
     return {
-      badge: 'bg-gradient-to-br from-orange-400 to-orange-500 text-white',
-      row: 'bg-orange-50'
+      badge: 'bg-gradient-to-br from-orange-400 to-orange-500',
+      row: 'bg-orange-500/10'
     };
   }
   return {
-    badge: 'bg-gray-100 text-gray-600',
-    row: 'bg-white'
+    badge: 'bg-gray-700',
+    row: 'bg-[#1e1e2a]'
   };
+}
+
+function getRankDisplay(rank: number): string {
+  if (rank === 1) return '🥇';
+  if (rank === 2) return '🥈';
+  if (rank === 3) return '🥉';
+  return String(rank);
 }
 
 interface LeaderboardRowProps {
@@ -67,27 +74,28 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
   const displayName = getDisplayName(entry);
   // Use local score if it's higher (not yet synced to server)
   const displayScore = isCurrentUser ? Math.max(localScore ?? 0, score ?? 0) : score;
+  const isTopThree = rank <= 3;
 
   return (
     <div
-      className={cn('flex items-center rounded-xl', isCurrentUser ? 'bg-blue-500 shadow-md' : row)}
-      style={{gap: '4px', padding: '6px'}}
+      className={cn('flex items-center rounded-xl', isCurrentUser ? 'bg-blue-600 shadow-md' : row)}
+      style={{gap: '8px', padding: '8px 10px'}}
     >
       {/* Rank */}
       <div
         className={cn(
           'rounded-lg flex items-center justify-center shrink-0 font-bold',
-          isCurrentUser ? 'bg-white/20 text-white' : badge
+          isCurrentUser ? 'bg-white/20 text-white' : isTopThree ? '' : badge + ' text-gray-300'
         )}
-        style={{width: '32px', height: '32px', fontSize: '12px'}}
+        style={{width: '32px', height: '32px', fontSize: isTopThree ? '18px' : '13px'}}
       >
-        {rank}
+        {getRankDisplay(rank)}
       </div>
 
       {/* Name */}
       <div className="flex-1 min-w-0">
         <p
-          className={cn('font-semibold truncate', isCurrentUser ? 'text-white' : 'text-gray-900')}
+          className={cn('font-semibold truncate', isCurrentUser ? 'text-white' : 'text-gray-200')}
           style={{fontSize: '14px'}}
         >
           {displayName}
@@ -101,7 +109,7 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
 
       {/* Score */}
       <div
-        className={cn('font-bold tabular-nums shrink-0', isCurrentUser ? 'text-white' : 'text-gray-900')}
+        className={cn('font-bold tabular-nums shrink-0', isCurrentUser ? 'text-white' : 'text-gray-400')}
         style={{fontSize: '14px'}}
       >
         {formatScore(displayScore)}
@@ -113,8 +121,8 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
 export function Leaderboard({entries, currentUserTelegramId, localScore}: LeaderboardProps) {
   if (entries.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow border border-gray-200 text-center" style={{padding: '24px'}}>
-        <p className="text-gray-400" style={{fontSize: '14px'}}>
+      <div className="bg-[#16161f] rounded-2xl border border-gray-800 text-center" style={{padding: '24px'}}>
+        <p className="text-gray-500" style={{fontSize: '14px'}}>
           No players yet
         </p>
       </div>
@@ -122,7 +130,7 @@ export function Leaderboard({entries, currentUserTelegramId, localScore}: Leader
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow border border-gray-200" style={{padding: '8px'}}>
+    <div className="bg-[#16161f] rounded-2xl border border-gray-800" style={{padding: '8px'}}>
       <div style={{display: 'flex', flexDirection: 'column', gap: '4px'}}>
         {entries.map(entry => {
           const isCurrentUser = entry.telegramId === currentUserTelegramId;

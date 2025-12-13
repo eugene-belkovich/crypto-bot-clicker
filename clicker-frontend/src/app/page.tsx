@@ -15,7 +15,7 @@ export default function Home() {
 
   if (!isReady) {
     return (
-      <div className={cn('flex h-screen items-center justify-center', 'bg-[var(--tg-bg,#fff)]')}>
+      <div className={cn('flex h-screen items-center justify-center', 'bg-[#0a0a0f]')}>
         <div className="flex flex-col items-center gap-3">
           <div
             className={cn(
@@ -24,14 +24,14 @@ export default function Home() {
               'rounded-full animate-spin'
             )}
           />
-          <span className="text-sm sm:text-base text-[var(--tg-hint,#999)]">Loading...</span>
+          <span className="text-sm sm:text-base text-gray-400">Loading...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[var(--tg-bg,#fff)]">
+    <div className="flex flex-col h-screen w-full bg-[#0a0a0f]">
       {activeTab === 'game' ? (
         <GameView score={score} onClick={handleClick} />
       ) : (

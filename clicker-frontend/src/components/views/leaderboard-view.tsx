@@ -35,7 +35,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
   if (error) {
     return (
       <div className="flex-1 flex items-center justify-center" style={{margin: '0 16px'}}>
-        <div className="text-red-500 text-center">{error}</div>
+        <div className="text-red-400 text-center">{error}</div>
       </div>
     );
   }
@@ -51,7 +51,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
     <div className="flex-1 overflow-y-auto" style={{padding: '16px'}}>
       <UserRankCard username={displayUsername} photoUrl={userPhoto} rank={me?.rank ?? 0} score={displayScore} />
 
-      <h2 style={{textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#111', margin: '16px 0 12px'}}>
+      <h2 style={{textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#e5e5e5', margin: '16px 0 12px'}}>
         Top 25
       </h2>
 

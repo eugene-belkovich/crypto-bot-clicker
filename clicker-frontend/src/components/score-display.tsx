@@ -14,13 +14,13 @@ export function ScoreDisplay({score}: ScoreDisplayProps) {
   return (
     <div className="text-center">
       <div
-        className={cn('font-bold', 'text-[var(--tg-text,#000)]', 'tracking-tight', 'transition-transform duration-100')}
+        className={cn('font-bold', 'text-white', 'tracking-tight', 'transition-transform duration-100')}
         style={{fontSize: '48px'}}
       >
         {formatScore(score)}
       </div>
       <div
-        className={cn('text-[var(--tg-hint,#999)]', 'font-medium', 'uppercase tracking-widest')}
+        className={cn('text-gray-500', 'font-medium', 'uppercase tracking-widest')}
         style={{fontSize: '14px', marginTop: '4px'}}
       >
         points

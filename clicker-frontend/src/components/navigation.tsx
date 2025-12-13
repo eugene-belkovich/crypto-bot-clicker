@@ -22,19 +22,19 @@ function NavItem({icon, label, isActive, onClick}: NavItemProps) {
         'flex-1 py-2',
         'transition-all duration-200',
         'touch-manipulation select-none',
-        isActive ? 'text-blue-500' : 'text-gray-400'
+        isActive ? 'text-blue-400' : 'text-gray-500'
       )}
     >
       <div
         className={cn(
           'w-12 h-12 rounded-2xl flex items-center justify-center',
           'transition-all duration-200',
-          isActive ? 'bg-blue-50' : 'bg-transparent'
+          isActive ? 'bg-blue-500/20' : 'bg-transparent'
         )}
       >
         <div className="w-6 h-6">{icon}</div>
       </div>
-      <span className={cn('text-xs font-medium', isActive ? 'text-blue-500' : 'text-gray-400')}>{label}</span>
+      <span className={cn('text-xs font-medium', isActive ? 'text-blue-400' : 'text-gray-500')}>{label}</span>
     </button>
   );
 }
@@ -47,7 +47,7 @@ interface BottomNavigationProps {
 export function BottomNavigation({activeTab, onTabChange}: BottomNavigationProps) {
   return (
     <nav
-      className="bg-white border-t border-gray-100 shrink-0"
+      className="bg-[#16161f] border-t border-gray-800 shrink-0"
       style={{paddingBottom: 'env(safe-area-inset-bottom, 0px)'}}
     >
       <div className="flex items-center justify-around w-full">
