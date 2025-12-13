@@ -4,12 +4,16 @@ import {useState, useCallback} from 'react';
 import {BottomNavigation, type TabType} from '@/components/navigation';
 import {GameView} from '@/components/views/game-view';
 import {LeaderboardView} from '@/components/views/leaderboard-view';
+import {MobileOnlyScreen} from '@/components/mobile-only-screen';
 import {useGame} from '@/hooks/use-game';
 import {useTelegram} from '@/hooks/use-telegram';
 import {cn} from '@/lib/utils';
 
+const PLATFORM_LOCK = process.env.NEXT_PUBLIC_PLATFORM_LOCK === 'true';
+const BOT_URL = process.env.NEXT_PUBLIC_BOT_URL || '';
+
 export default function Home() {
-  const {initData, user, isReady} = useTelegram();
+  const {initData, user, isReady, platform, isMobile} = useTelegram();
   const {score, handleClick, flushClicks} = useGame(initData);
   const [activeTab, setActiveTab] = useState<TabType>('game');
 
@@ -38,6 +42,10 @@ export default function Home() {
         </div>
       </div>
     );
+  }
+
+  if (PLATFORM_LOCK && !isMobile) {
+    return <MobileOnlyScreen platform={platform} botUrl={BOT_URL} />;
   }
 
   return (

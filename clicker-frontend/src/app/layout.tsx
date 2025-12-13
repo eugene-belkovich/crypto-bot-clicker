@@ -2,7 +2,6 @@ import type {Metadata, Viewport} from 'next';
 import {Geist} from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
-import {TelegramProvider} from '@/context/telegram-context';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,9 +30,7 @@ export default function RootLayout({
       <head>
         <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
       </head>
-      <body className={`${geistSans.variable} font-sans antialiased`}>
-        <TelegramProvider>{children}</TelegramProvider>
-      </body>
+      <body className={`${geistSans.variable} font-sans antialiased`}>{children}</body>
     </html>
   );
 }

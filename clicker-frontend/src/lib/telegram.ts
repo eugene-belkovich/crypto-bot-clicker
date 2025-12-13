@@ -10,6 +10,8 @@ export interface TelegramThemeParams {
   secondary_bg_color?: string;
 }
 
+export type TelegramPlatform = 'ios' | 'android' | 'android_x' | 'tdesktop' | 'macos' | 'weba' | 'webk' | 'unigram' | 'unknown';
+
 export interface TelegramWebApp {
   initData: string;
   initDataUnsafe: {
@@ -17,6 +19,7 @@ export interface TelegramWebApp {
     auth_date?: number;
     hash?: string;
   };
+  platform: TelegramPlatform;
   ready: () => void;
   expand: () => void;
   close: () => void;
@@ -25,6 +28,10 @@ export interface TelegramWebApp {
   isExpanded: boolean;
   viewportHeight: number;
   viewportStableHeight: number;
+}
+
+export function isMobilePlatform(platform: TelegramPlatform): boolean {
+  return platform === 'ios' || platform === 'android' || platform === 'android_x';
 }
 
 declare global {

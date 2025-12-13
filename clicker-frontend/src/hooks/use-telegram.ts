@@ -1,7 +1,14 @@
 'use client';
 
-import {useTelegramContext} from '@/context/telegram-context';
+import {useEffect} from 'react';
+import {useTelegramStore} from '@/store/telegram';
 
 export function useTelegram() {
-  return useTelegramContext();
+  const store = useTelegramStore();
+
+  useEffect(() => {
+    store.init();
+  }, []);
+
+  return store;
 }

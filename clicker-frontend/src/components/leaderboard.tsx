@@ -24,12 +24,6 @@ function getDisplayName(entry: LeaderboardEntry): string {
     return entry.username || entry.firstName || 'Anonymous';
 }
 
-function getInitials(entry: LeaderboardEntry): string {
-    const name = entry.username || entry.firstName;
-    if (!name) return '?';
-    return name.slice(0, 2).toUpperCase();
-}
-
 function getRankStyle(rank: number): { badge: string; row: string } {
     if (rank === 1) {
         return {
