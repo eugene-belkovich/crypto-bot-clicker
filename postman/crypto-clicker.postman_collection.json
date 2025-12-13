@@ -2,7 +2,7 @@
   "info": {
     "name": "Crypto Clicker",
     "_postman_id": "crypto-clicker-collection",
-    "description": "API collection for Crypto Clicker - a Telegram Mini App clicker game.\n\n## Sub-projects\n- **Backend**: Fastify API server (port 8080)\n- **Frontend**: Next.js static app (no API routes)\n- **Bot**: Telegram bot service (port 3001)\n\n## Authentication\nProtected endpoints require `X-Telegram-Init-Data` header with valid Telegram WebApp init data.",
+    "description": "API collection for Crypto Clicker - a Telegram Mini App clicker game.\n\n## Sub-projects\n- **Backend**: Fastify API server (port 8080)\n- **Frontend**: Next.js web app (port 3000)\n- **Bot**: Telegram bot service (port 3001)\n\n## Authentication\nProtected endpoints require `X-Telegram-Init-Data` header with valid Telegram WebApp init data.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -15,6 +15,11 @@
       "key": "baseUrlBot",
       "value": "https://vdm7k6nxus.us-east-1.awsapprunner.com",
       "description": "Telegram Bot service base URL (DEV)"
+    },
+    {
+      "key": "baseUrlFrontend",
+      "value": "http://localhost:3000",
+      "description": "Frontend app base URL"
     },
     {
       "key": "telegramInitData",
@@ -170,6 +175,38 @@
               "path": ["version"]
             },
             "description": "Get Telegram bot service version information.\n\n**Response:**\n```json\n{\n  \"name\": \"crypto-clicker-bot\",\n  \"version\": \"1.0.0\"\n}\n```"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Frontend",
+      "description": "Next.js frontend app endpoints",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlFrontend}}/api/health-check",
+              "host": ["{{baseUrlFrontend}}"],
+              "path": ["api", "health-check"]
+            },
+            "description": "Check frontend service health status.\n\n**Response:**\n```json\n{\n  \"status\": \"ok\",\n  \"timestamp\": \"2025-12-12T10:00:00.000Z\",\n  \"uptime\": 12345.67\n}\n```"
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrlFrontend}}/api/version",
+              "host": ["{{baseUrlFrontend}}"],
+              "path": ["api", "version"]
+            },
+            "description": "Get frontend service version information.\n\n**Response:**\n```json\n{\n  \"name\": \"clicker-frontend\",\n  \"version\": \"0.0.1\"\n}\n```"
           }
         }
       ]
