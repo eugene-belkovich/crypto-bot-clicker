@@ -28,16 +28,15 @@ export interface ClickResponse {
 
 export interface LeaderboardEntry {
   rank: number;
-  userId: number;
-  name: string;
-  photoUrl?: string;
+  telegramId: string;
+  username: string | null;
+  firstName: string | null;
   score: number;
 }
 
 export interface LeaderboardData {
-  top25: LeaderboardEntry[];
-  myRank: number;
-  myScore: number;
+  leaderboard: LeaderboardEntry[];
+  me: LeaderboardEntry;
 }
 
 export interface UserData {

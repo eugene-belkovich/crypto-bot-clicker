@@ -12,26 +12,16 @@ function formatScore(score: number): string {
 
 export function ScoreDisplay({score}: ScoreDisplayProps) {
   return (
-    <div className={cn('text-center', 'py-6 sm:py-8 md:py-10 lg:py-12', 'px-4')}>
+    <div className="text-center">
       <div
-        className={cn(
-          'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
-          'font-bold',
-          'text-[var(--tg-text,#000)]',
-          'tracking-tight',
-          'transition-transform duration-100'
-        )}
+        className={cn('font-bold', 'text-[var(--tg-text,#000)]', 'tracking-tight', 'transition-transform duration-100')}
+        style={{fontSize: '48px'}}
       >
         {formatScore(score)}
       </div>
       <div
-        className={cn(
-          'text-base sm:text-lg md:text-xl',
-          'text-[var(--tg-hint,#999)]',
-          'mt-1 sm:mt-2',
-          'font-medium',
-          'uppercase tracking-widest'
-        )}
+        className={cn('text-[var(--tg-hint,#999)]', 'font-medium', 'uppercase tracking-widest')}
+        style={{fontSize: '14px', marginTop: '4px'}}
       >
         points
       </div>

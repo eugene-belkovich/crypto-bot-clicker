@@ -35,7 +35,13 @@ export default function Home() {
       {activeTab === 'game' ? (
         <GameView score={score} onClick={handleClick} />
       ) : (
-        <LeaderboardView initData={initData} userId={user?.id} userName={user?.first_name} />
+        <LeaderboardView
+          initData={initData}
+          visitorTelegramId={user?.id}
+          username={user?.username || user?.first_name}
+          userPhoto={user?.photo_url}
+          localScore={score}
+        />
       )}
 
       <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />

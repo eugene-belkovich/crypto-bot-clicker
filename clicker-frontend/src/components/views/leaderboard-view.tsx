@@ -1,21 +1,29 @@
 'use client';
 
-import {Trophy} from 'lucide-react';
+import {useEffect} from 'react';
 import {Leaderboard} from '@/components/leaderboard';
-import {useLeaderboard} from '@/hooks/use-leaderboard';
+import {UserRankCard} from '@/components/user-rank-card';
+import {useLeaderboardStore} from '@/store/leaderboard';
 
 interface LeaderboardViewProps {
   initData: string;
-  userId?: number;
-  userName?: string;
+  visitorTelegramId?: number;
+  username?: string;
+  userPhoto?: string;
+  localScore?: number;
 }
 
-export function LeaderboardView({initData, userId, userName}: LeaderboardViewProps) {
-  const {data, isLoading, error} = useLeaderboard(initData);
+export function LeaderboardView({initData, visitorTelegramId, username, userPhoto, localScore}: LeaderboardViewProps) {
+  const {data, isLoading, error, init, cleanup} = useLeaderboardStore();
+
+  useEffect(() => {
+    init(initData);
+    return () => cleanup();
+  }, [initData, init, cleanup]);
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="flex-1 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
           <span className="text-sm text-gray-400">Loading...</span>
@@ -26,28 +34,32 @@ export function LeaderboardView({initData, userId, userName}: LeaderboardViewPro
 
   if (error) {
     return (
-      <div className="flex-1 flex flex-col p-6">
-        <header className="flex items-center justify-center gap-2 py-3 shrink-0">
-          <Trophy className="w-6 h-6 text-amber-500" />
-          <h1 className="text-xl font-bold text-gray-900">Leaderboard</h1>
-        </header>
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-red-500 text-center">{error}</div>
-        </div>
+      <div className="flex-1 flex items-center justify-center" style={{margin: '0 16px'}}>
+        <div className="text-red-500 text-center">{error}</div>
       </div>
     );
   }
 
-  return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <header className="flex items-center justify-center gap-2 py-3 shrink-0">
-        <Trophy className="w-6 h-6 text-amber-500" />
-        <h1 className="text-xl font-bold text-gray-900">Leaderboard</h1>
-      </header>
+  if (!data) return null;
 
-      <main className="flex-1 overflow-hidden min-h-0">
-        {data && <Leaderboard data={data} currentUserId={userId} currentUserName={userName} />}
-      </main>
+  const me = data.me;
+  const displayUsername = me?.username || username || me?.firstName || 'Player';
+  // Use local score if it's higher (not yet synced to server)
+  const displayScore = Math.max(localScore ?? 0, me?.score ?? 0);
+
+  return (
+    <div className="flex-1 overflow-y-auto" style={{padding: '16px'}}>
+      <UserRankCard username={displayUsername} photoUrl={userPhoto} rank={me?.rank ?? 0} score={displayScore} />
+
+      <h2 style={{textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#111', margin: '16px 0 12px'}}>
+        Top 25
+      </h2>
+
+      <Leaderboard
+        entries={data.leaderboard ?? []}
+        currentUserTelegramId={visitorTelegramId ? String(visitorTelegramId) : undefined}
+        localScore={localScore}
+      />
     </div>
   );
 }
