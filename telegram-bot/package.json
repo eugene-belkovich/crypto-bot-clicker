@@ -1,11 +1,11 @@
 {
   "name": "crypto-clicker-bot",
   "version": "1.0.0",
-  "main": "out/server.js",
+  "main": "out/src/server.js",
   "scripts": {
     "dev": "NODE_ENV=local tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node out/server.js",
+    "start": "node out/src/server.js",
     "format": "prettier --write src",
     "format:check": "prettier --check src",
     "docker:build": "docker build -t crypto-clicker-bot .",
