@@ -55,4 +55,6 @@ const clickSchema = new Schema<IClickDocument>(
     }
 );
 
+clickSchema.index({userId: 1, timestamp: 1}, {unique: true});
+
 export const Click: Model<IClickDocument> = model<IClickDocument>('Click', clickSchema);
