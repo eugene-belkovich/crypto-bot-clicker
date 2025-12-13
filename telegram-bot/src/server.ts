@@ -92,39 +92,47 @@ app.get('/version', (_req, res) => {
     res.json(data);
 });
 
-const server = app.listen(config.port, async () => {
-    console.log(`Environment: ${config.nodeEnv}`);
-    console.log(`Express server listening on port ${config.port}`);
-
+async function startServer() {
+    await bot.init();
     const botInfo = await bot.api.getMe();
 
-    if (config.webhookUrl) {
-        // Production: use webhook
-        const webhookPath = `/webhook/${config.botToken}`;
-        const fullWebhookUrl = `${config.webhookUrl}${webhookPath}`;
+    const server = app.listen(config.port, async () => {
+        console.log(`Environment: ${config.nodeEnv}`);
+        console.log(`Express server listening on port ${config.port}`);
 
-        await bot.api.setWebhook(fullWebhookUrl);
-        console.log(`Bot @${botInfo.username} is running with webhook!`);
-        console.log(`Webhook URL: ${fullWebhookUrl}`);
-    } else {
-        // Development: use polling
-        await bot.api.deleteWebhook();
-        bot.start({
-            onStart: () => {
-                console.log(`Bot @${botInfo.username} is running with polling!`);
-            }
-        });
-    }
-});
+        if (config.webhookUrl) {
+            // Production: use webhook
+            const webhookPath = `/webhook/${config.botToken}`;
+            const fullWebhookUrl = `${config.webhookUrl}${webhookPath}`;
 
-process.on('SIGTERM', () => {
-    console.log('SIGTERM received, graceful shutdown...');
-    bot.stop();
-    server.close(() => process.exit(0));
-    setTimeout(() => process.exit(1), 10000);
-});
+            await bot.api.setWebhook(fullWebhookUrl);
+            console.log(`Bot @${botInfo.username} is running with webhook!`);
+            console.log(`Webhook URL: ${fullWebhookUrl}`);
+        } else {
+            // Development: use polling
+            await bot.api.deleteWebhook();
+            bot.start({
+                onStart: () => {
+                    console.log(`Bot @${botInfo.username} is running with polling!`);
+                }
+            });
+        }
+    });
 
-process.on('SIGINT', () => {
-    console.log('\nStopping...');
-    process.exit(0);
+    process.on('SIGTERM', () => {
+        console.log('SIGTERM received, graceful shutdown...');
+        bot.stop();
+        server.close(() => process.exit(0));
+        setTimeout(() => process.exit(1), 10000);
+    });
+
+    process.on('SIGINT', () => {
+        console.log('\nStopping...');
+        process.exit(0);
+    });
+}
+
+startServer().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
 });
