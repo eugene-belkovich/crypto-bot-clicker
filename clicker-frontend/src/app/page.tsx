@@ -31,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#0a0a0f]">
+    <div className="relative h-screen w-full overflow-hidden">
       {activeTab === 'game' ? (
         <GameView score={score} onClick={handleClick} />
       ) : (

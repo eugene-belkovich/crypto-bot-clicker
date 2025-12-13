@@ -23,7 +23,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
+      <div className="h-full w-full flex items-center justify-center bg-[#0a0a0f]">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
           <span className="text-sm text-gray-400">Loading...</span>
@@ -34,7 +34,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
 
   if (error) {
     return (
-      <div className="flex-1 flex items-center justify-center" style={{margin: '0 16px'}}>
+      <div className="h-full w-full flex items-center justify-center bg-[#0a0a0f]" style={{margin: '0 16px'}}>
         <div className="text-red-400 text-center">{error}</div>
       </div>
     );
@@ -48,7 +48,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
   const displayScore = Math.max(localScore ?? 0, me?.score ?? 0);
 
   return (
-    <div className="flex-1 overflow-y-auto" style={{padding: '16px'}}>
+    <div className="h-full w-full overflow-y-auto bg-[#0a0a0f]" style={{padding: '16px', paddingBottom: '120px'}}>
       <UserRankCard username={displayUsername} photoUrl={userPhoto} rank={me?.rank ?? 0} score={displayScore} />
 
       <h2 style={{textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#e5e5e5', margin: '16px 0 12px'}}>
