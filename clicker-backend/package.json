@@ -11,7 +11,9 @@
     "migration:down": "npx ts-migrate-mongoose down",
     "migration:create": "npx ts-migrate-mongoose create",
     "lint": "eslint src",
-    "lint:fix": "eslint --fix src"
+    "lint:fix": "eslint --fix src",
+    "seed:top50": "npx ts-node scripts/seedTop50.ts",
+    "seed:reset": "npx ts-node scripts/seedReset.ts"
   },
   "keywords": [],
   "author": "",
