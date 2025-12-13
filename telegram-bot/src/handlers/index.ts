@@ -1,5 +1,5 @@
-import { Composer } from "grammy";
-import { startHandler } from "./start";
+import {Composer} from 'grammy';
+import {startHandler} from './start';
 
 export const handlers = new Composer();
 
