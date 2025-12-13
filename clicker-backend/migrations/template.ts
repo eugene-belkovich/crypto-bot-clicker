@@ -1,4 +1,4 @@
-import {connectToDatabase, disconnectFromDatabase} from '../src/config/mongoose';
+import {connectToDatabase, disconnectFromDatabase} from '../src/utils/mongoose';
 
 export async function up(): Promise<void> {
     try {

@@ -1,5 +1,5 @@
 import mongoose, { ConnectOptions } from 'mongoose';
-import logger from '../logger';
+import logger from './logger';
 
 export const connectToDatabase = async (config?: ConnectOptions): Promise<typeof mongoose | false> => {
   try {

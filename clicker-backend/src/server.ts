@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
-import './logger';
+import './utils/logger';
 import Fastify, {FastifyError, FastifyReply, FastifyRequest} from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
@@ -9,7 +9,7 @@ import sensible from '@fastify/sensible';
 import {connectToDatabase} from './config';
 import {registerRoutes} from './routes';
 import {ApplicationError, ValidationError} from './errors';
-import logger from './logger';
+import {logger} from './utils';
 
 dotenv.config();
 

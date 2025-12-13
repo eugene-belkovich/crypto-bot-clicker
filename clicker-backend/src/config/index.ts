@@ -1,1 +1,1 @@
-export * from './mongoose';
+export * from '../utils/mongoose';
