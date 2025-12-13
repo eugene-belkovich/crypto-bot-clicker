@@ -2,10 +2,10 @@
 
 import {useCallback, useState} from 'react';
 import {BottomNavigation, type TabType} from '@/components/navigation';
+import {BanView} from '@/components/views/ban-view';
 import {GameView} from '@/components/views/game-view';
 import {LeaderboardView} from '@/components/views/leaderboard-view';
 import {MobileOnlyView} from '@/components/views/mobile-only-view';
-import {BanView} from '@/components/views/ban-view';
 import {useGame} from '@/hooks/use-game';
 import {useTelegram} from '@/hooks/use-telegram';
 import {cn} from '@/lib/utils';

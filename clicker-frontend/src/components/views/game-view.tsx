@@ -1,8 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import type {MouseEvent, TouchEvent} from 'react';
 import {useCallback, useState} from 'react';
-import Image from 'next/image';
 import {ScoreDisplay} from '@/components/score-display';
 
 interface ClickEffect {
@@ -52,6 +52,8 @@ export function GameView({score, onClick}: GameViewProps) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="h-full w-full flex items-center justify-center select-none relative"
       style={{
         backgroundImage: 'url(/bf.jpeg)',
@@ -59,6 +61,7 @@ export function GameView({score, onClick}: GameViewProps) {
         backgroundPosition: 'center bottom'
       }}
       onClick={handleClick}
+      onKeyDown={e => e.key === 'Enter' && onClick(0, 0)}
       onTouchStart={handleTouch}
     >
       {/* Bottom fade overlay */}

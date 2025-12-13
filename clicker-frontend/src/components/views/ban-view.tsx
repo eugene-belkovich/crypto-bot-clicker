@@ -16,6 +16,7 @@ export function BanView({reason}: BanViewProps) {
       <p className="text-red-200 mb-6">Suspicious activity detected</p>
       {reason && <p className="text-red-300 text-sm mb-6 opacity-70">{reason}</p>}
       <button
+        type="button"
         onClick={() => webApp?.close()}
         className="px-6 py-3 bg-red-800 hover:bg-red-700 text-white rounded-lg transition-colors"
       >

@@ -79,7 +79,7 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
       <div
         className={cn(
           'rounded-lg flex items-center justify-center shrink-0 font-bold',
-          isTopThree ? '' : badge + ' text-white'
+          isTopThree ? '' : `${badge} text-white`
         )}
         style={{width: '32px', height: '32px', fontSize: isTopThree ? '20px' : '13px'}}
       >

@@ -8,7 +8,7 @@ export function useTelegram() {
 
   useEffect(() => {
     store.init();
-  }, []);
+  }, [store.init]);
 
   return store;
 }
