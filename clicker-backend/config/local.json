@@ -18,9 +18,9 @@
     "regularityMeanMs": 100
   },
   "logging": {
-    "level": "info"
+    "level": "debug"
   },
   "telegram": {
-    "skipValidation": false
+    "skipValidation": true
   }
 }

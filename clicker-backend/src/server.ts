@@ -6,15 +6,15 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import sensible from '@fastify/sensible';
 
-import {connectToDatabase} from './config';
+import {config, connectToDatabase} from './config';
 import {registerRoutes} from './routes';
 import {ApplicationError, BannedError, ValidationError} from './errors';
 import {logger} from './utils';
 
 dotenv.config();
 
-const PORT = parseInt(process.env.PORT || '8080', 10);
-const HOST = process.env.HOST || '0.0.0.0';
+const PORT = config.server.port;
+const HOST = config.server.host;
 
 async function bootstrap() {
     const fastify = Fastify({

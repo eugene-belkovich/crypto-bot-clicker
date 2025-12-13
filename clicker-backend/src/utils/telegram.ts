@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import {config} from '../config';
 
 export interface TelegramUser {
     id: number;
@@ -13,10 +14,11 @@ export interface ParsedInitData {
 }
 
 export function isInitDataValid(initData: string): boolean {
-    if (process.env.SKIP_TELEGRAM_VALIDATION === 'true') {
+    if (config.telegram.skipValidation) {
         return true;
     }
 
+    // TELEGRAM_BOT_TOKEN is a secret - must remain as env var
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     if (!botToken) return false;
 
