@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import type {MouseEvent, TouchEvent} from 'react';
-import {useCallback, useRef, useState} from 'react';
+import type {PointerEvent} from 'react';
+import {useCallback, useState} from 'react';
 import {ScoreDisplay} from '@/components/score-display';
 
 interface ClickEffect {
@@ -21,7 +21,6 @@ let effectId = 0;
 export function GameView({score, onClick}: GameViewProps) {
   const [effects, setEffects] = useState<ClickEffect[]>([]);
   const [isBouncing, setIsBouncing] = useState(false);
-  const touchHandledRef = useRef(false);
 
   const addEffect = useCallback((x: number, y: number) => {
     const id = effectId++;
@@ -36,30 +35,12 @@ export function GameView({score, onClick}: GameViewProps) {
     setTimeout(() => setIsBouncing(false), 80);
   }, []);
 
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-    // Skip if this click was triggered by a touch event
-    if (touchHandledRef.current) {
-      touchHandledRef.current = false;
-      return;
-    }
+  const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    // Prevent default to avoid any browser handling
+    e.preventDefault();
     onClick(e.clientX, e.clientY);
     addEffect(e.clientX, e.clientY);
     triggerBounce();
-  };
-
-  const handleTouch = (e: TouchEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    touchHandledRef.current = true;
-    // Reset flag after a short delay to handle edge cases
-    setTimeout(() => {
-      touchHandledRef.current = false;
-    }, 300);
-    const touch = e.touches[0];
-    if (touch) {
-      onClick(touch.clientX, touch.clientY);
-      addEffect(touch.clientX, touch.clientY);
-      triggerBounce();
-    }
   };
 
   return (
@@ -70,11 +51,11 @@ export function GameView({score, onClick}: GameViewProps) {
       style={{
         backgroundImage: 'url(/bf.jpeg)',
         backgroundSize: 'cover',
-        backgroundPosition: 'center bottom'
+        backgroundPosition: 'center bottom',
+        touchAction: 'manipulation'
       }}
-      onClick={handleClick}
+      onPointerDown={handlePointerDown}
       onKeyDown={e => e.key === 'Enter' && onClick(0, 0)}
-      onTouchStart={handleTouch}
     >
       {/* Bottom fade overlay */}
       <div
