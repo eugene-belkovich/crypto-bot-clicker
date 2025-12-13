@@ -11,4 +11,5 @@ export async function userRoutes(fastify: FastifyInstance) {
 
     fastify.get('/me', userController.getMe.bind(userController));
     fastify.get('/score', userController.getScore.bind(userController));
+    fastify.get('/leaderboard', userController.getLeaderboard.bind(userController));
 }

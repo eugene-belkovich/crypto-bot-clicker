@@ -102,6 +102,26 @@
                 },
                 "description": "Get user's total score (clicks count).\n\n**Authentication:** Requires `X-Telegram-Init-Data` header\n\n**Response:**\n```json\n{\n  \"score\": 42\n}\n```"
               }
+            },
+            {
+              "name": "Get Leaderboard",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Telegram-Init-Data",
+                    "value": "{{telegramInitData}}",
+                    "type": "text",
+                    "description": "Telegram WebApp init data"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrlBackend}}/api/leaderboard",
+                  "host": ["{{baseUrlBackend}}"],
+                  "path": ["api", "leaderboard"]
+                },
+                "description": "Get top-25 leaderboard and current user's rank.\n\n**Authentication:** Requires `X-Telegram-Init-Data` header\n\n**Response:**\n```json\n{\n  \"leaderboard\": [\n    {\n      \"rank\": 1,\n      \"telegramId\": \"123456\",\n      \"username\": \"topuser\",\n      \"firstName\": \"John\",\n      \"score\": 1000\n    }\n  ],\n  \"me\": {\n    \"rank\": 42,\n    \"telegramId\": \"94986611\",\n    \"username\": \"ffrm4n\",\n    \"firstName\": \"Eugene\",\n    \"score\": 150\n  }\n}\n```"
+              }
             }
           ]
         },

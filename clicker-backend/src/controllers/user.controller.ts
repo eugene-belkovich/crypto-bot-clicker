@@ -1,15 +1,14 @@
 import {inject, injectable} from 'inversify';
 import {FastifyReply, FastifyRequest} from 'fastify';
 import {TYPES} from '../types/di.types';
-import {IClickService, IUserService} from '../interfaces';
+import {ILeaderboardService, IUserService} from '../interfaces';
 
 @injectable()
 export class UserController {
     constructor(
         @inject(TYPES.UserService) private userService: IUserService,
-        @inject(TYPES.ClickService) private clickService: IClickService
-    ) {
-    }
+        @inject(TYPES.LeaderboardService) private leaderboardService: ILeaderboardService
+    ) {}
 
     async getMe(request: FastifyRequest, reply: FastifyReply) {
         const {user} = request.telegramUser;
@@ -20,8 +19,6 @@ export class UserController {
             lastName: user.last_name,
         });
 
-        const score = await this.clickService.getScore(String(user.id));
-
         return reply.send({
             user: {
                 telegramId: dbUser.telegramId,
@@ -31,15 +28,23 @@ export class UserController {
                 createdAt: dbUser.createdAt,
                 updatedAt: dbUser.updatedAt,
             },
-            score,
+            score: dbUser.score,
         });
     }
 
     async getScore(request: FastifyRequest, reply: FastifyReply) {
         const {user} = request.telegramUser;
 
-        const score = await this.clickService.getScore(String(user.id));
+        const score = await this.userService.getScore(String(user.id));
 
         return reply.send({score});
+    }
+
+    async getLeaderboard(request: FastifyRequest, reply: FastifyReply) {
+        const {user} = request.telegramUser;
+
+        const leaderboard = await this.leaderboardService.getLeaderboard(String(user.id));
+
+        return reply.send(leaderboard);
     }
 }

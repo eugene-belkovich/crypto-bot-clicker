@@ -6,6 +6,7 @@ export interface IUser {
     username?: string;
     firstName?: string;
     lastName?: string;
+    score: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -31,6 +32,11 @@ const userSchema = new Schema<IUserDocument>(
         lastName: {
             type: String,
             default: null,
+        },
+        score: {
+            type: Number,
+            default: 0,
+            index: true,
         },
     },
     {

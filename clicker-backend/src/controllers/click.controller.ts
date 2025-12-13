@@ -1,14 +1,16 @@
 import {inject, injectable} from 'inversify';
 import {FastifyReply, FastifyRequest} from 'fastify';
 import {TYPES} from '../types/di.types';
-import {ClickData, IClickService} from '../interfaces';
+import {ClickData, IClickService, IUserService} from '../interfaces';
 
 @injectable()
 export class ClickController {
-    constructor(@inject(TYPES.ClickService) private clickService: IClickService) {
-    }
+    constructor(
+        @inject(TYPES.ClickService) private clickService: IClickService,
+        @inject(TYPES.UserService) private userService: IUserService
+    ) {}
 
-    async saveClicks(request: FastifyRequest<{ Body: ClickData[] }>, reply: FastifyReply) {
+    async saveClicks(request: FastifyRequest<{Body: ClickData[]}>, reply: FastifyReply) {
         const {user} = request.telegramUser;
         const clicks = request.body;
 
@@ -27,7 +29,7 @@ export class ClickController {
         }
 
         await this.clickService.saveClicks(String(user.id), clicks);
-        const score = await this.clickService.getScore(String(user.id));
+        const score = await this.userService.getScore(String(user.id));
 
         return reply.send({score});
     }

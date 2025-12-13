@@ -1,4 +1,5 @@
 import {injectable} from 'inversify';
+import {ClientSession} from 'mongoose';
 import {IUserRepository} from '../interfaces';
 import {IUser, IUserDocument, User} from '../models';
 import {catchAsync} from '../utils';
@@ -29,4 +30,14 @@ export class UserRepository implements IUserRepository {
     findById = catchAsync(async (id: string): Promise<IUserDocument | null> => {
         return User.findById(id);
     });
+
+    incrementScore = catchAsync(
+        async (telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null> => {
+            return User.findOneAndUpdate(
+                {telegramId},
+                {$inc: {score: amount}},
+                {new: true, session}
+            );
+        }
+    );
 }

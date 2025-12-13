@@ -1,3 +1,4 @@
+import {ClientSession} from 'mongoose';
 import {IUser, IUserDocument} from '../models';
 
 export interface IUserRepository {
@@ -6,4 +7,6 @@ export interface IUserRepository {
     findOrCreateByTelegramId(telegramId: string, userData?: Partial<IUser>): Promise<IUserDocument>;
 
     findById(id: string): Promise<IUserDocument | null>;
+
+    incrementScore(telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null>;
 }
