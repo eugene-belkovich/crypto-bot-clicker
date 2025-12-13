@@ -1,0 +1,9 @@
+{
+  "api": {
+    "url": "http://localhost:8080"
+  },
+  "bot": {
+    "url": "https://t.me/CryptoBotClickerBot"
+  },
+  "platformLock": false
+}

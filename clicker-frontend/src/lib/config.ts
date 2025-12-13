@@ -1,28 +1,29 @@
-type EnvironmentConfig = {
-    apiUrl: string;
-};
+import localConfig from '../../config/local.json';
+import developmentConfig from '../../config/development.json';
 
-const ENV_CONFIG: Record<string, EnvironmentConfig> = {
-    'crypto-bot-clicker-frontend-dev.pages.dev': {
-        apiUrl: 'https://d2ypsdn3rr.us-east-1.awsapprunner.com'
-    },
-};
+type EnvironmentConfig = typeof localConfig;
 
-const DEFAULT_CONFIG: EnvironmentConfig = {
-    apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
-};
+const DEVELOPMENT_HOSTS = ['crypto-bot-clicker-frontend-dev.pages.dev'];
+
+function isDevelopment(): boolean {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  return DEVELOPMENT_HOSTS.includes(window.location.hostname);
+}
 
 function getConfig(): EnvironmentConfig {
-    if (typeof window === 'undefined') {
-        return DEFAULT_CONFIG;
-    }
-
-    const hostname = window.location.hostname;
-    return ENV_CONFIG[hostname] || DEFAULT_CONFIG;
+  return isDevelopment() ? developmentConfig : localConfig;
 }
 
 export const config = {
-    get apiUrl(): string {
-        return getConfig().apiUrl;
-    }
+  get apiUrl(): string {
+    return getConfig().api.url;
+  },
+  get botUrl(): string {
+    return getConfig().bot.url;
+  },
+  get platformLock(): boolean {
+    return getConfig().platformLock;
+  }
 };

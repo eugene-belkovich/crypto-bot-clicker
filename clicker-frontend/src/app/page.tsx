@@ -8,10 +8,8 @@ import {LeaderboardView} from '@/components/views/leaderboard-view';
 import {MobileOnlyView} from '@/components/views/mobile-only-view';
 import {useGame} from '@/hooks/use-game';
 import {useTelegram} from '@/hooks/use-telegram';
+import {config} from '@/lib/config';
 import {cn} from '@/lib/utils';
-
-const PLATFORM_LOCK = process.env.NEXT_PUBLIC_PLATFORM_LOCK === 'true';
-const BOT_URL = process.env.NEXT_PUBLIC_BOT_URL || '';
 
 export default function Home() {
   const {initData, user, isReady, platform, isMobile} = useTelegram();
@@ -45,8 +43,8 @@ export default function Home() {
     );
   }
 
-  if (PLATFORM_LOCK && !isMobile) {
-    return <MobileOnlyView platform={platform} botUrl={BOT_URL} />;
+  if (config.platformLock && !isMobile) {
+    return <MobileOnlyView platform={platform} botUrl={config.botUrl} />;
   }
 
   if (isBanned) {

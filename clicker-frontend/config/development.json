@@ -1,0 +1,9 @@
+{
+  "api": {
+    "url": "https://d2ypsdn3rr.us-east-1.awsapprunner.com"
+  },
+  "bot": {
+    "url": "https://t.me/CryptoBotClickerBot"
+  },
+  "platformLock": false
+}
