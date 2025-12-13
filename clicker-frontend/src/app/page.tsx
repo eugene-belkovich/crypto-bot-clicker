@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useState, useCallback} from 'react';
 import {BottomNavigation, type TabType} from '@/components/navigation';
 import {GameView} from '@/components/views/game-view';
 import {LeaderboardView} from '@/components/views/leaderboard-view';
@@ -10,8 +10,18 @@ import {cn} from '@/lib/utils';
 
 export default function Home() {
   const {initData, user, isReady} = useTelegram();
-  const {score, handleClick} = useGame(initData);
+  const {score, handleClick, flushClicks} = useGame(initData);
   const [activeTab, setActiveTab] = useState<TabType>('game');
+
+  const handleTabChange = useCallback(
+    async (tab: TabType) => {
+      if (tab === 'leaderboard') {
+        await flushClicks();
+      }
+      setActiveTab(tab);
+    },
+    [flushClicks]
+  );
 
   if (!isReady) {
     return (
@@ -44,7 +54,7 @@ export default function Home() {
         />
       )}
 
-      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
 }

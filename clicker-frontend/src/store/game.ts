@@ -19,6 +19,7 @@ interface GameActions {
   init: (initData: string) => Promise<void>;
   click: (x: number, y: number) => void;
   syncClicks: () => Promise<void>;
+  flushClicks: () => Promise<void>;
 }
 
 type GameStore = GameState & GameActions;
@@ -97,6 +98,14 @@ export const useGameStore = create<GameStore>((set, get) => {
         debouncedSyncClicks.flush();
       } else {
         debouncedSyncClicks();
+      }
+    },
+
+    flushClicks: async () => {
+      debouncedSyncClicks.cancel();
+      const {clicksBuffer} = get();
+      if (clicksBuffer.length > 0) {
+        await get().syncClicks();
       }
     }
   };

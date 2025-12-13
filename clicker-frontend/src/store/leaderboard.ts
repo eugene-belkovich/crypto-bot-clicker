@@ -30,9 +30,7 @@ export const useLeaderboardStore = create<LeaderboardStore>((set, get) => ({
   intervalId: null,
 
   init: (initData: string) => {
-    const {initData: currentInitData, stopAutoRefresh} = get();
-
-    if (currentInitData === initData) return;
+    const {stopAutoRefresh} = get();
 
     stopAutoRefresh();
     set({initData, isLoading: true, error: null});

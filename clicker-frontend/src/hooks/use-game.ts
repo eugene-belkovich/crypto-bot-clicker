@@ -9,6 +9,7 @@ export function useGame(initData: string) {
   const isLoaded = useGameStore(state => state.isLoaded);
   const init = useGameStore(state => state.init);
   const click = useGameStore(state => state.click);
+  const flushClicks = useGameStore(state => state.flushClicks);
 
   useEffect(() => {
     if (initData) {
@@ -20,6 +21,7 @@ export function useGame(initData: string) {
     score,
     isSyncing,
     isLoaded,
-    handleClick: click
+    handleClick: click,
+    flushClicks
   };
 }
