@@ -50,13 +50,22 @@ export const useGameStore = create<GameStore>((set, get) => {
     initData: '',
 
     init: async (initData: string) => {
+      const {initData: currentInitData} = get();
+
+      // Prevent re-initialization with same initData
+      if (currentInitData === initData) return;
+
       set({initData, metadata: getMetadata()});
 
       try {
-        const {score} = await api.getScore(initData);
-        set({score, isLoaded: true});
+        const {score: serverScore} = await api.getScore(initData);
+        // Account for any clicks made while fetching
+        const {clicksBuffer} = get();
+        set({score: serverScore + clicksBuffer.length, isLoaded: true});
       } catch {
-        set({isLoaded: true});
+        // On error, keep pending clicks as score
+        const {clicksBuffer} = get();
+        set({score: clicksBuffer.length, isLoaded: true});
       }
     },
 

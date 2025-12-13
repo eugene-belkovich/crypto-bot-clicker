@@ -72,7 +72,7 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
 
     return (
         <div
-            className={cn('flex items-center rounded-xl', row)}
+            className={cn('flex items-center rounded-xl', row, isCurrentUser && 'ring-2 ring-yellow-400/80')}
             style={{gap: '8px', padding: '4px 6px'}}
         >
             {/* Rank */}
