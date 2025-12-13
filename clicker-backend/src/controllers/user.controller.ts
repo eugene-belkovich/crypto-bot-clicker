@@ -35,9 +35,13 @@ export class UserController {
     async getScore(request: FastifyRequest, reply: FastifyReply) {
         const {user} = request.telegramUser;
 
-        const score = await this.userService.getScore(String(user.id));
+        const dbUser = await this.userService.getOrCreateUser(String(user.id), {
+            username: user.username,
+            firstName: user.first_name,
+            lastName: user.last_name,
+        });
 
-        return reply.send({score});
+        return reply.send({score: dbUser.score});
     }
 
     async getLeaderboard(request: FastifyRequest, reply: FastifyReply) {

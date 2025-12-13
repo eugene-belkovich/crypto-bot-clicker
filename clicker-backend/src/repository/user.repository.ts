@@ -33,7 +33,14 @@ export class UserRepository implements IUserRepository {
 
     incrementScore = catchError(
         async (telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null> => {
-            return User.findOneAndUpdate({telegramId}, {$inc: {score: amount}}, {new: true, session});
+            return User.findOneAndUpdate(
+                {telegramId},
+                {
+                    $inc: {score: amount},
+                    $setOnInsert: {telegramId}
+                },
+                {new: true, upsert: true, session}
+            );
         }
     );
 }
