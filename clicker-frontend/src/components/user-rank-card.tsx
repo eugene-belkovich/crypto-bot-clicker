@@ -31,19 +31,19 @@ function getRankBadgeStyle(rank: number): string {
 
 export function UserRankCard({username, photoUrl, rank, score}: UserRankCardProps) {
     return (
-        <div style={{padding: '20px'}}>
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px'}}>
+        <div style={{padding: '16px 20px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px'}}>
                 <div className="relative">
                     <div
-                        className="rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-indigo-600"
-                        style={{width: '64px', height: '64px'}}
+                        className="rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-indigo-500 ring-4 ring-white/30"
+                        style={{width: '72px', height: '72px'}}
                     >
                         {photoUrl ? (
                             <img src={photoUrl} alt={username} className="w-full h-full object-cover" />
                         ) : (
                             <div
                                 className="w-full h-full flex items-center justify-center text-white font-bold"
-                                style={{fontSize: '18px'}}
+                                style={{fontSize: '20px'}}
                             >
                                 You
                             </div>
@@ -52,28 +52,28 @@ export function UserRankCard({username, photoUrl, rank, score}: UserRankCardProp
                     <div
                         className={cn(
                             'absolute flex items-center justify-center font-bold',
-                            'ring-2 ring-[#16161f] shadow',
+                            'ring-2 ring-white/50 shadow-lg',
                             getRankBadgeStyle(rank)
                         )}
                         style={{
                             bottom: '-4px',
                             right: '-4px',
-                            minWidth: '26px',
-                            height: '26px',
+                            minWidth: '28px',
+                            height: '28px',
                             padding: '0 6px',
-                            borderRadius: '13px',
-                            fontSize: '12px'
+                            borderRadius: '14px',
+                            fontSize: '13px'
                         }}
                     >
                         {rank > 0 ? rank : '?'}
                     </div>
                 </div>
 
-                <p className="font-bold text-gray-200" style={{fontSize: '16px'}}>
+                <p className="font-bold text-white drop-shadow-md" style={{fontSize: '16px'}}>
                     @{username || 'anonymous'}
                 </p>
 
-                <p className="font-bold text-blue-400 tabular-nums" style={{fontSize: '24px'}}>
+                <p className="font-bold text-white tabular-nums drop-shadow-md" style={{fontSize: '28px'}}>
                     {formatScore(score)}
                 </p>
             </div>
