@@ -19,16 +19,19 @@ export class LeaderboardRepository implements ILeaderboardRepository {
     });
 
     getUserRank = catchError(async (telegramId: string): Promise<number> => {
-        const user = await User.findOne({telegramId}).lean();
+        const result = await User.aggregate([
+            {$sort: {score: -1, _id: 1}},
+            {
+                $group: {
+                    _id: null,
+                    users: {$push: {telegramId: '$telegramId'}},
+                },
+            },
+            {$unwind: {path: '$users', includeArrayIndex: 'rank'}},
+            {$match: {'users.telegramId': telegramId}},
+            {$project: {rank: {$add: ['$rank', 1]}}},
+        ]);
 
-        if (!user) {
-            return 0;
-        }
-
-        const usersWithHigherScore = await User.countDocuments({
-            score: {$gt: user.score},
-        });
-
-        return usersWithHigherScore + 1;
+        return result[0]?.rank || 0;
     });
 }

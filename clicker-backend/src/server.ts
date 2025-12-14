@@ -34,7 +34,7 @@ async function bootstrap() {
     });
 
     await fastify.register(rateLimit, {
-        max: 100,
+        max: 200,
         timeWindow: '1 minute',
         keyGenerator: (request) => {
             const telegramUser = request.telegramUser?.user;
