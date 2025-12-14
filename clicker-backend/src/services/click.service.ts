@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types/di.types';
 import {ClickData, IClickRepository, IClickService, IUserRepository} from '../interfaces';
 import {validateClickBatch} from '../utils';
 import {BannedError} from '../errors';
+import {config} from '../config';
 
 @injectable()
 export class ClickService implements IClickService {
@@ -27,21 +27,13 @@ export class ClickService implements IClickService {
             throw new BannedError(validation.reason);
         }
 
-        // 3. Save clicks and increment score
-        const session = await mongoose.startSession();
+        // 3. Save clicks and increment score. Score uses $inc which is atomic, clicks are append-only logs
+        const pointsPerClick = config.game.pointsPerClick;
+        const scoreIncrement = clicks.length * pointsPerClick;
 
-        try {
-            session.startTransaction();
-
-            await this.clickRepository.saveClicks(telegramId, clicks, session);
-            await this.userRepository.incrementScore(telegramId, clicks.length, session);
-
-            await session.commitTransaction();
-        } catch (error) {
-            await session.abortTransaction();
-            throw error;
-        } finally {
-            await session.endSession();
-        }
+        await Promise.all([
+            this.clickRepository.saveClicks(telegramId, clicks),
+            this.userRepository.incrementScore(telegramId, scoreIncrement),
+        ]);
     }
 }
