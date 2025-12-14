@@ -4,6 +4,7 @@ import './utils/logger';
 import Fastify, {FastifyError, FastifyReply, FastifyRequest} from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import rateLimit from '@fastify/rate-limit';
 import sensible from '@fastify/sensible';
 
 import {config, connectToDatabase} from './config';
@@ -30,6 +31,19 @@ async function bootstrap() {
 
     await fastify.register(helmet, {
         contentSecurityPolicy: false,
+    });
+
+    await fastify.register(rateLimit, {
+        max: 100,
+        timeWindow: '1 minute',
+        keyGenerator: (request) => {
+            const telegramUser = request.telegramUser?.user;
+            return telegramUser?.id?.toString() || request.ip;
+        },
+        errorResponseBuilder: () => ({
+            error: 'Too many requests',
+            message: 'Rate limit exceeded. Try again later.',
+        }),
     });
 
     await fastify.register(sensible);
