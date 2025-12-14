@@ -31,10 +31,14 @@ const clickSchema = new Schema<IClickDocument>(
         x: {
             type: Number,
             required: true,
+            min: -100000,
+            max: 100000,
         },
         y: {
             type: Number,
             required: true,
+            min: -100000,
+            max: 100000,
         },
         metadata: {
             userAgent: String,

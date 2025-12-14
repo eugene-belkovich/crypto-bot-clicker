@@ -1,9 +1,9 @@
 import {FastifySchema} from 'fastify';
 
 const clickDataProperties = {
-    timestamp: {type: 'string'},
-    x: {type: 'number'},
-    y: {type: 'number'},
+    timestamp: {type: 'string', format: 'date-time'},
+    x: {type: 'number', minimum: -100000, maximum: 100000},
+    y: {type: 'number', minimum: -100000, maximum: 100000},
     metadata: {
         type: 'object',
         properties: {

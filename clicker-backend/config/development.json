@@ -21,6 +21,7 @@
     "level": "info"
   },
   "telegram": {
-    "skipValidation": false
+    "skipValidation": false,
+    "maxAuthAgeSec": 86400
   }
 }
