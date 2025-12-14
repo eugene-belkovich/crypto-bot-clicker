@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import dotenv from 'dotenv';
 import './utils/logger';
 import Fastify, {FastifyError, FastifyReply, FastifyRequest} from 'fastify';
-import cors from '@fastify/cors';
+import {registerCors} from './plugins/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import sensible from '@fastify/sensible';
@@ -22,12 +22,7 @@ async function bootstrap() {
         logger: false,
     });
 
-    await fastify.register(cors, {
-        origin: true,
-        credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Telegram-Init-Data'],
-    });
+    await registerCors(fastify);
 
     await fastify.register(helmet, {
         contentSecurityPolicy: false,
