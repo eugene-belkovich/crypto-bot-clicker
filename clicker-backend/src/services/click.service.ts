@@ -10,10 +10,9 @@ export class ClickService implements IClickService {
     constructor(
         @inject(TYPES.ClickRepository) private clickRepository: IClickRepository,
         @inject(TYPES.UserRepository) private userRepository: IUserRepository
-    ) {
-    }
+    ) {}
 
-    async saveClicks(telegramId: string, clicks: ClickData[]): Promise<void> {
+    async saveClicks(telegramId: string, clicks: ClickData[]): Promise<number> {
         // 1. Check if user is banned
         const user = await this.userRepository.findByTelegramId(telegramId);
         if (user?.isBanned) {
@@ -27,13 +26,16 @@ export class ClickService implements IClickService {
             throw new BannedError(validation.reason);
         }
 
-        // 3. Save clicks and increment score. Score uses $inc which is atomic, clicks are append-only logs
-        const pointsPerClick = config.game.pointsPerClick;
-        const scoreIncrement = clicks.length * pointsPerClick;
+        // 3. Upsert clicks and increment score only by newly inserted items
+        const savedCount = await this.clickRepository.saveClicks(telegramId, clicks);
+        if (savedCount > 0) {
+            const savedPoints = savedCount * (config.game.pointsPerClick ?? 1);
+            const user = await this.userRepository.incrementScore(telegramId, savedPoints);
+            return user?.score ?? (user?.score ?? 0) + savedPoints;
+        }
 
-        await Promise.all([
-            this.clickRepository.saveClicks(telegramId, clicks),
-            this.userRepository.incrementScore(telegramId, scoreIncrement),
-        ]);
+        // No new clicks inserted → return current score
+        const fresh = await this.userRepository.findByTelegramId(telegramId);
+        return fresh?.score ?? 0;
     }
 }

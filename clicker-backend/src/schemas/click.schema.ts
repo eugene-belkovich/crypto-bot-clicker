@@ -12,10 +12,10 @@ const clickDataProperties = {
             hasOrientation: {type: 'boolean'},
             hasOrientationEvent: {type: 'boolean'},
             hasMotionEvent: {type: 'boolean'},
-            timeZone: {type: 'string'},
+            timeZone: {type: 'string'}
         },
-        additionalProperties: false,
-    },
+        additionalProperties: false
+    }
 } as const;
 
 export const saveClicksSchema: FastifySchema = {
@@ -27,15 +27,15 @@ export const saveClicksSchema: FastifySchema = {
             type: 'object',
             required: ['timestamp', 'x', 'y'],
             properties: clickDataProperties,
-            additionalProperties: false,
-        },
+            additionalProperties: false
+        }
     },
     response: {
         200: {
             type: 'object',
             properties: {
-                score: {type: 'number'},
-            },
-        },
-    },
+                score: {type: 'number'}
+            }
+        }
+    }
 };

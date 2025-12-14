@@ -1,5 +1,4 @@
 import {ClientSession} from 'mongoose';
-import {IClickDocument} from '../models';
 
 export interface ClickData {
     timestamp: string;
@@ -16,7 +15,7 @@ export interface ClickData {
 }
 
 export interface IClickRepository {
-    saveClicks(userId: string, clicks: ClickData[], session?: ClientSession): Promise<IClickDocument[]>;
+    saveClicks(userId: string, clicks: ClickData[], session?: ClientSession): Promise<number>;
 
     getScoreByUserId(userId: string): Promise<number>;
 }

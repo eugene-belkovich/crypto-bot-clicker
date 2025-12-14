@@ -14,9 +14,7 @@ export class ClickController {
         const {user} = request.telegramUser;
         const clicks = request.body;
 
-        await this.clickService.saveClicks(String(user.id), clicks);
-        const score = await this.userService.getScore(String(user.id));
-
+        const score = await this.clickService.saveClicks(String(user.id), clicks);
         return reply.send({score});
     }
 }
