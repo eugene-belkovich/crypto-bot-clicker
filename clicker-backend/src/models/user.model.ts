@@ -61,4 +61,6 @@ const userSchema = new Schema<IUserDocument>(
     }
 );
 
+userSchema.index({score: -1, _id: 1});
+
 export const User: Model<IUserDocument> = model<IUserDocument>('User', userSchema);

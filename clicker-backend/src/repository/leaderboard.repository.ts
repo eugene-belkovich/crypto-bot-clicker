@@ -7,7 +7,7 @@ import {catchError} from '../errors';
 export class LeaderboardRepository implements ILeaderboardRepository {
     getTopUsers = catchError(async (limit: number): Promise<LeaderboardEntry[]> => {
         const users = await User.find({isBanned: {$ne: true}})
-            .sort({score: -1})
+            .sort({score: -1, _id: 1})
             .limit(limit)
             .lean();
 
@@ -22,19 +22,17 @@ export class LeaderboardRepository implements ILeaderboardRepository {
     });
 
     getUserRank = catchError(async (telegramId: string): Promise<number> => {
-        const result = await User.aggregate([
-            {$sort: {score: -1, _id: 1}},
-            {
-                $group: {
-                    _id: null,
-                    users: {$push: {telegramId: '$telegramId'}},
-                },
-            },
-            {$unwind: {path: '$users', includeArrayIndex: 'rank'}},
-            {$match: {'users.telegramId': telegramId}},
-            {$project: {rank: {$add: ['$rank', 1]}}},
-        ]);
+        const me = await User.findOne({telegramId}).select({_id: 1, score: 1, isBanned: 1}).lean();
+        if (!me || me.isBanned) return 0;
 
-        return result[0]?.rank || 0;
+        const higherOrTieBefore = await User.countDocuments({
+            isBanned: {$ne: true},
+            $or: [
+                {score: {$gt: me.score}},
+                {score: me.score, _id: {$lt: me._id}},
+            ],
+        });
+
+        return higherOrTieBefore + 1;
     });
 }
