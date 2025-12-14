@@ -2,9 +2,9 @@
 
 import type {PointerEvent} from 'react';
 import {useCallback, useRef, useState} from 'react';
-import {ScoreDisplay} from '@/components/score-display';
 import {AnimatedBackground} from '@/components/animated-background';
 import {AnimatedCharacter, type AnimatedCharacterRef} from '@/components/animated-character';
+import {ScoreDisplay} from '@/components/score-display';
 
 interface ClickEffect {
   id: number;
