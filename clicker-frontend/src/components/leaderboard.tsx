@@ -88,12 +88,7 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
       </div>
 
       {/* Avatar */}
-      <CachedAvatar
-        telegramId={telegramId}
-        photoUrl={photoUrl}
-        fallbackName={displayName}
-        size={32}
-      />
+      <CachedAvatar telegramId={telegramId} photoUrl={photoUrl} fallbackName={displayName} size={32} />
 
       {/* Name */}
       <div className="flex-1 min-w-0">
