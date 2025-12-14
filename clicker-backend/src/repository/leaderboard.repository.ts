@@ -13,6 +13,7 @@ export class LeaderboardRepository implements ILeaderboardRepository {
             telegramId: user.telegramId,
             username: user.username ?? null,
             firstName: user.firstName ?? null,
+            photoUrl: user.photoUrl ?? null,
             score: user.score,
         }));
     });

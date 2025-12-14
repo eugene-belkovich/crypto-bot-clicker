@@ -2,6 +2,7 @@
 
 import {cn} from '@/lib/utils';
 import type {LeaderboardEntry} from '@/types';
+import {CachedAvatar} from './cached-avatar';
 
 interface LeaderboardProps {
   entries: LeaderboardEntry[];
@@ -63,7 +64,7 @@ interface LeaderboardRowProps {
 }
 
 function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps) {
-  const {rank, score} = entry;
+  const {rank, score, telegramId, photoUrl} = entry;
   const {badge, row} = getRankStyle(rank);
   const displayName = getDisplayName(entry);
   // Use local score if it's higher (not yet synced to server)
@@ -85,6 +86,14 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
       >
         {getRankDisplay(rank)}
       </div>
+
+      {/* Avatar */}
+      <CachedAvatar
+        telegramId={telegramId}
+        photoUrl={photoUrl}
+        fallbackName={displayName}
+        size={32}
+      />
 
       {/* Name */}
       <div className="flex-1 min-w-0">

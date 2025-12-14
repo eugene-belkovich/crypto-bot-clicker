@@ -31,6 +31,7 @@ export interface LeaderboardEntry {
   telegramId: string;
   username: string | null;
   firstName: string | null;
+  photoUrl: string | null;
   score: number;
 }
 

@@ -21,6 +21,9 @@ export class UserRepository implements IUserRepository {
                         firstName: userData?.firstName || null,
                         lastName: userData?.lastName || null,
                     },
+                    $set: {
+                        photoUrl: userData?.photoUrl || null,
+                    },
                 },
                 {upsert: true, new: true}
             );

@@ -17,6 +17,7 @@ export class UserController {
             username: user.username,
             firstName: user.first_name,
             lastName: user.last_name,
+            photoUrl: user.photo_url,
         });
 
         return reply.send({
@@ -39,6 +40,7 @@ export class UserController {
             username: user.username,
             firstName: user.first_name,
             lastName: user.last_name,
+            photoUrl: user.photo_url,
         });
 
         return reply.send({score: dbUser.score});

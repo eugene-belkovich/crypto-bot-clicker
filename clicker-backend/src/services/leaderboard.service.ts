@@ -24,6 +24,7 @@ export class LeaderboardService implements ILeaderboardService {
                 telegramId: user?.telegramId ?? telegramId,
                 username: user?.username ?? null,
                 firstName: user?.firstName ?? null,
+                photoUrl: user?.photoUrl ?? null,
                 score: user?.score ?? 0,
             },
         };
