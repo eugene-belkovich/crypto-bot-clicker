@@ -5,32 +5,17 @@ import {useCallback, useRef, useState} from 'react';
 import {AnimatedBackground} from '@/components/animated-background';
 import {AnimatedCharacter, type AnimatedCharacterRef} from '@/components/animated-character';
 import {ScoreDisplay} from '@/components/score-display';
-
-interface ClickEffect {
-  id: number;
-  x: number;
-  y: number;
-}
+import {SparkEffect, useSparkEffect} from '@/components/spark-effect';
 
 interface GameViewProps {
   score: number;
   onClick: (x: number, y: number) => void;
 }
 
-let effectId = 0;
-
 export function GameView({score, onClick}: GameViewProps) {
-  const [effects, setEffects] = useState<ClickEffect[]>([]);
   const [isBouncing, setIsBouncing] = useState(false);
   const characterRef = useRef<AnimatedCharacterRef>(null);
-
-  const addEffect = useCallback((x: number, y: number) => {
-    const id = effectId++;
-    setEffects(prev => [...prev, {id, x, y}]);
-    setTimeout(() => {
-      setEffects(prev => prev.filter(e => e.id !== id));
-    }, 600);
-  }, []);
+  const {effects, addEffect} = useSparkEffect();
 
   const triggerBounce = useCallback(() => {
     setIsBouncing(true);
@@ -78,45 +63,7 @@ export function GameView({score, onClick}: GameViewProps) {
           <AnimatedCharacter ref={characterRef} />
         </div>
 
-        {effects.map(effect => (
-          <div
-            key={effect.id}
-            className="click-effect"
-            style={{
-              position: 'fixed',
-              left: effect.x,
-              top: effect.y,
-              pointerEvents: 'none',
-              zIndex: 50,
-            }}
-          >
-            +1
-          </div>
-        ))}
-
-        <style jsx>{`
-          .click-effect {
-            font-size: 32px;
-            font-weight: bold;
-            color: #fcd34d;
-            text-shadow:
-              0 0 12px rgba(252, 211, 77, 0.8),
-              0 2px 4px rgba(0, 0, 0, 0.3);
-            animation: floatUp 0.6s ease-out forwards;
-            transform: translate(-50%, -50%);
-          }
-
-          @keyframes floatUp {
-            0% {
-              opacity: 1;
-              transform: translate(-50%, -50%) scale(1);
-            }
-            100% {
-              opacity: 0;
-              transform: translate(-50%, -100%) scale(1.3);
-            }
-          }
-        `}</style>
+        <SparkEffect effects={effects} />
       </div>
     </AnimatedBackground>
   );
