@@ -16,14 +16,14 @@ Press the button below to start playing!`;
 export const startHandler = new Composer();
 
 startHandler.command('start', async ctx => {
-    // Set "Play" button instead of hamburger menu for this chat
-    await ctx.setChatMenuButton({
-        menu_button: {
-            type: 'web_app',
-            text: 'Play',
-            web_app: {url: config.miniAppUrl}
-        }
-    });
+  // Set "Play" button instead of hamburger menu for this chat
+  await ctx.setChatMenuButton({
+    menu_button: {
+      type: 'web_app',
+      text: 'Play',
+      web_app: {url: config.miniAppUrl},
+    },
+  });
 
-    await replyWithGame(ctx, WELCOME_MESSAGE);
+  await replyWithGame(ctx, WELCOME_MESSAGE);
 });

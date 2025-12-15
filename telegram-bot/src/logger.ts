@@ -2,15 +2,15 @@ import pino from 'pino';
 import {config} from './config';
 
 const logger = pino({
-    level: config.logging.level,
-    transport: {
-        target: 'pino-pretty',
-        options: {
-            colorize: true,
-            translateTime: 'HH:MM:ss',
-            ignore: 'pid,hostname'
-        }
-    }
+  level: config.logging.level,
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+      translateTime: 'HH:MM:ss',
+      ignore: 'pid,hostname',
+    },
+  },
 });
 
 console.log = logger.info.bind(logger);

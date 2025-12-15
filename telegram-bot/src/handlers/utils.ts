@@ -7,29 +7,29 @@ const userLastMessage: Record<number, number> = {};
 const WELCOME_IMAGE = path.join(process.cwd(), 'image', 'welcome.jpeg');
 
 export const getPlayKeyboard = () => {
-    return new InlineKeyboard().webApp('Play', config.miniAppUrl);
+  return new InlineKeyboard().webApp('Play', config.miniAppUrl);
 };
 
 export const replyWithGame = async (ctx: Context, text: string) => {
-    const userId = ctx.from?.id;
+  const userId = ctx.from?.id;
 
-    if (userId && userLastMessage[userId]) {
-        try {
-            await ctx.api.editMessageReplyMarkup(userId, userLastMessage[userId], {
-                reply_markup: undefined
-            });
-        } catch (error) {
-            console.error('Unexpected error removing keyboard:', error);
-        }
+  if (userId && userLastMessage[userId]) {
+    try {
+      await ctx.api.editMessageReplyMarkup(userId, userLastMessage[userId], {
+        reply_markup: undefined,
+      });
+    } catch (error) {
+      console.error('Unexpected error removing keyboard:', error);
     }
+  }
 
-    const message = await ctx.replyWithPhoto(new InputFile(WELCOME_IMAGE), {
-        caption: text,
-        reply_markup: getPlayKeyboard(),
-        parse_mode: 'HTML'
-    });
+  const message = await ctx.replyWithPhoto(new InputFile(WELCOME_IMAGE), {
+    caption: text,
+    reply_markup: getPlayKeyboard(),
+    parse_mode: 'HTML',
+  });
 
-    if (userId) {
-        userLastMessage[userId] = message.message_id;
-    }
+  if (userId) {
+    userLastMessage[userId] = message.message_id;
+  }
 };
