@@ -1,6 +1,6 @@
 # Crypto Bot Clicker
 
-Ссылка на игру: @CryptoBotClickerBot
+Ссылка на игру: https://t.me/CryptoBotClickerBot
 
 Telegram Mini App — кликер-игра с криптовалютной тематикой.
 
