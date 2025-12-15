@@ -1,4 +1,7 @@
-.PHONY: seedTop50 seedReset ban unban
+.PHONY: seedTop5 seedTop50 seedReset ban unban
+
+seedTop5:
+	npm run seed:top5
 
 seedTop50:
 	npm run seed:top50
