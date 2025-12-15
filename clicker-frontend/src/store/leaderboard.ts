@@ -1,8 +1,20 @@
+import axios, {AxiosError} from 'axios';
 import {create} from 'zustand';
 import {api} from '@/lib/api';
 import type {LeaderboardData} from '@/types';
+import {useGameStore} from './game';
 
 const AUTO_REFRESH_INTERVAL_MS = 10000;
+
+interface BannedResponse {
+  banned: true;
+  banReason?: string;
+  error?: string;
+}
+
+function isBannedError(error: unknown): error is AxiosError<BannedResponse> {
+  return axios.isAxiosError(error) && error.response?.status === 403 && error.response?.data?.banned === true;
+}
 
 interface LeaderboardState {
   data: LeaderboardData | null;
@@ -46,7 +58,13 @@ export const useLeaderboardStore = create<LeaderboardStore>((set, get) => ({
     try {
       const result = await api.getLeaderboard(initData);
       set({data: result, error: null, isLoading: false});
-    } catch {
+    } catch (error) {
+      if (isBannedError(error)) {
+        const {banReason, error: errorMessage} = error.response!.data;
+        useGameStore.setState({isBanned: true, banReason: banReason || errorMessage, isLoaded: true});
+        set({error: 'Account suspended', isLoading: false});
+        return;
+      }
       set({error: 'Failed to load leaderboard', isLoading: false});
     }
   },

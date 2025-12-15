@@ -13,7 +13,7 @@ import {cn} from '@/lib/utils';
 
 export default function Home() {
   const {initData, user, isReady, platform, isMobile} = useTelegram();
-  const {score, handleClick, flushClicks, isBanned, banReason} = useGame(initData);
+  const {score, handleClick, flushClicks, isBanned, banReason, isLoaded} = useGame(initData);
   const [activeTab, setActiveTab] = useState<TabType>('game');
 
   const handleTabChange = useCallback(
@@ -26,7 +26,7 @@ export default function Home() {
     [flushClicks],
   );
 
-  if (!isReady) {
+  if (!isReady || !isLoaded) {
     return (
       <div className={cn('flex h-screen items-center justify-center', 'bg-[#0a0a0f]')}>
         <div className="flex flex-col items-center gap-3">
