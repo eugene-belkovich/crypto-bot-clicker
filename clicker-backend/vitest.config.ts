@@ -6,5 +6,6 @@ export default defineConfig({
     env: {
       NODE_ENV: 'local',
     },
+    exclude: ['dist/**', 'node_modules/**'],
   },
 });

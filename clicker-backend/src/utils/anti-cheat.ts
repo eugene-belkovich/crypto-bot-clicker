@@ -1,92 +1,101 @@
 /**
- * Anti-Cheat System
+ * Anti-Cheat System — detects autoclickers and bots.
  *
- * Защита от автокликеров и ботов в игре-кликере.
- * Анализирует батч кликов и выявляет подозрительные паттерны.
+ * Checks:
+ * 1. Too fast — >30% clicks under 30ms interval
+ * 2. Identical coords — 40+ clicks at same position
+ * 3. Robotic pattern — CV < 10% with mean < 100ms (too regular)
  *
- * Проверки:
- * 1. Too fast — слишком быстрые клики (>30% кликов с интервалом <30мс)
- *    Человек физически не может кликать быстрее ~15 раз/сек
- *
- * 2. Identical coords — клики в одну точку (40+ кликов в одну позицию)
- *    Боты кликают точно в одну точку, люди немного двигают мышь
- *
- * 3. Robotic pattern — машинная регулярность интервалов
- *    CV (коэффициент вариации) < 10% при среднем интервале < 100мс
- *    Человек не может кликать с точностью робота (ровно каждые 50мс)
- *
- * Пример:
- *   Человек: 120мс, 95мс, 140мс, 88мс (естественный разброс)
- *   Бот:     50мс, 50мс, 50мс, 50мс (идеально ровно)
+ * Human: 120ms, 95ms, 140ms, 88ms (natural variance)
+ * Bot:   50ms, 50ms, 50ms, 50ms (perfectly even)
  */
 import {config} from '../config';
 import {ClickData} from '../interfaces';
 
 export interface ValidationResult {
-  suspicious: boolean;
-  reason: string;
+    suspicious: boolean;
+    reason: string;
 }
 
-export type AntiCheatConfig = typeof config.antiCheat;
+/** Calculates intervals between sorted clicks */
+function getIntervals(clicks: ClickData[]): number[] {
+    const sorted = [...clicks].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+    const intervals: number[] = [];
+    for (let i = 1; i < sorted.length; i++) {
+        intervals.push(new Date(sorted[i].timestamp).getTime() - new Date(sorted[i - 1].timestamp).getTime());
+    }
+    return intervals;
+}
 
-/**
- * Валидирует батч кликов на подозрительную активность
- * @param clicks - массив кликов с timestamp и координатами x/y
- * @returns suspicious: true если обнаружен бот, reason - причина
- */
-export function validateClickBatch(clicks: ClickData[]): ValidationResult {
-  if (clicks.length < 2) {
-    return {suspicious: false, reason: ''};
-  }
+/** Check 1: Too many clicks faster than MIN_INTERVAL_MS */
+function checkTooFastClicks(intervals: number[], totalClicks: number): ValidationResult | null {
+    const MIN_INTERVAL_MS = config.antiCheat.minIntervalMs;
+    const TOO_FAST_THRESHOLD = config.antiCheat.tooFastThreshold;
 
-  const antiCheat = config.antiCheat;
+    const tooFastCount = intervals.filter(i => i < MIN_INTERVAL_MS).length;
+    if (tooFastCount > totalClicks * TOO_FAST_THRESHOLD) {
+        return {
+            suspicious: true,
+            reason: `Too fast: ${tooFastCount}/${totalClicks} clicks under ${MIN_INTERVAL_MS}ms`
+        };
+    }
+    return null;
+}
 
-  const sorted = [...clicks].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+/** Check 2: Too many clicks at identical coordinates */
+function checkIdenticalCoords(clicks: ClickData[]): ValidationResult | null {
+    const IDENTICAL_COORDS_LIMIT = config.antiCheat.identicalCoordsLimit;
 
-  // 1. Check intervals between clicks
-  const intervals: number[] = [];
-  for (let i = 1; i < sorted.length; i++) {
-    const interval = new Date(sorted[i].timestamp).getTime() - new Date(sorted[i - 1].timestamp).getTime();
-    intervals.push(interval);
-  }
+    if (clicks.length < 10) return null;
 
-  const tooFastCount = intervals.filter(i => i < antiCheat.minIntervalMs).length;
-  if (tooFastCount > clicks.length * antiCheat.tooFastThreshold) {
-    return {
-      suspicious: true,
-      reason: `Too fast: ${tooFastCount}/${clicks.length} clicks under ${antiCheat.minIntervalMs}ms`,
-    };
-  }
+    const coordMap = new Map<string, number>();
+    for (const click of clicks) {
+        const key = `${Math.round(click.x)},${Math.round(click.y)}`;
+        coordMap.set(key, (coordMap.get(key) || 0) + 1);
+    }
 
-  // 2. Check identical coordinates
-  const coordMap = new Map<string, number>();
-  for (const click of clicks) {
-    const key = `${Math.round(click.x)},${Math.round(click.y)}`;
-    coordMap.set(key, (coordMap.get(key) || 0) + 1);
-  }
+    const maxSameCoord = Math.max(...coordMap.values());
+    if (maxSameCoord >= IDENTICAL_COORDS_LIMIT) {
+        return {
+            suspicious: true,
+            reason: `Identical coords: ${maxSameCoord} clicks at same position`
+        };
+    }
+    return null;
+}
 
-  const maxSameCoord = Math.max(...coordMap.values());
-  if (maxSameCoord >= antiCheat.identicalCoordsLimit && clicks.length >= 10) {
-    return {
-      suspicious: true,
-      reason: `Identical coords: ${maxSameCoord} clicks at same position`,
-    };
-  }
+/** Check 3: Too regular intervals (low CV = robotic) */
+function checkRoboticPattern(intervals: number[]): ValidationResult | null {
+    const REGULARITY_CV = config.antiCheat.regularityCV;
+    const REGULARITY_MEAN_MS = config.antiCheat.regularityMeanMs;
 
-  // 3. Check regularity (too regular intervals = bot)
-  if (intervals.length >= 5) {
+    if (intervals.length < 5) return null;
+
     const mean = intervals.reduce((a, b) => a + b, 0) / intervals.length;
     const variance = intervals.reduce((sum, i) => sum + Math.pow(i - mean, 2), 0) / intervals.length;
     const stdDev = Math.sqrt(variance);
     const cv = mean > 0 ? stdDev / mean : 0;
 
-    if (cv < antiCheat.regularityCV && mean < antiCheat.regularityMeanMs) {
-      return {
-        suspicious: true,
-        reason: `Robotic pattern: CV=${(cv * 100).toFixed(1)}%, mean=${mean.toFixed(0)}ms`,
-      };
+    if (cv < REGULARITY_CV && mean < REGULARITY_MEAN_MS) {
+        return {
+            suspicious: true,
+            reason: `Robotic pattern: CV=${(cv * 100).toFixed(1)}%, mean=${mean.toFixed(0)}ms`
+        };
     }
-  }
+    return null;
+}
 
-  return {suspicious: false, reason: ''};
+/** Validates click batch for suspicious activity */
+export function validateClickBatch(clicks: ClickData[]): ValidationResult {
+    if (clicks.length < 2) {
+        return {suspicious: false, reason: ''};
+    }
+
+    const intervals = getIntervals(clicks);
+
+    return (
+        checkTooFastClicks(intervals, clicks.length) ||
+        checkIdenticalCoords(clicks) ||
+        checkRoboticPattern(intervals) || {suspicious: false, reason: ''}
+    );
 }
