@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios';
+import axios, {type AxiosError} from 'axios';
 import {create} from 'zustand';
 import {api} from '@/lib/api';
 import type {LeaderboardData} from '@/types';
@@ -60,7 +60,7 @@ export const useLeaderboardStore = create<LeaderboardStore>((set, get) => ({
       set({data: result, error: null, isLoading: false});
     } catch (error) {
       if (isBannedError(error)) {
-        const {banReason, error: errorMessage} = error.response!.data;
+        const {banReason, error: errorMessage} = error.response?.data ?? {};
         useGameStore.setState({isBanned: true, banReason: banReason || errorMessage, isLoaded: true});
         set({error: 'Account suspended', isLoading: false});
         return;

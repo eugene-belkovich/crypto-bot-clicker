@@ -74,14 +74,16 @@ export function SparkEffect({effects}: SparkEffectProps) {
             <div
               key={spark.id}
               className="spark"
-              style={{
-                '--spark-angle': `${spark.angle}deg`,
-                '--spark-distance': `${spark.distance}px`,
-                '--spark-size': `${spark.size}px`,
-                '--spark-delay': `${spark.delay}s`,
-                '--spark-duration': `${spark.duration}s`,
-                '--spark-hue': spark.hue,
-              } as React.CSSProperties}
+              style={
+                {
+                  '--spark-angle': `${spark.angle}deg`,
+                  '--spark-distance': `${spark.distance}px`,
+                  '--spark-size': `${spark.size}px`,
+                  '--spark-delay': `${spark.delay}s`,
+                  '--spark-duration': `${spark.duration}s`,
+                  '--spark-hue': spark.hue,
+                } as React.CSSProperties
+              }
             />
           ))}
         </div>
