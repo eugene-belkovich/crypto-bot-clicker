@@ -6,58 +6,58 @@ import {catchError} from '../errors';
 
 @injectable()
 export class UserRepository implements IUserRepository {
-    findByTelegramId = catchError(async (telegramId: string): Promise<IUserDocument | null> => {
-        return User.findOne({telegramId});
-    });
+  findByTelegramId = catchError(async (telegramId: string): Promise<IUserDocument | null> => {
+    return User.findOne({telegramId});
+  });
 
-    findOrCreateByTelegramId = catchError(
-        async (telegramId: string, userData?: Partial<IUser>): Promise<IUserDocument> => {
-            return User.findOneAndUpdate(
-                {telegramId},
-                {
-                    $setOnInsert: {
-                        telegramId,
-                        username: userData?.username || null,
-                        firstName: userData?.firstName || null,
-                        lastName: userData?.lastName || null,
-                    },
-                    $set: {
-                        photoUrl: userData?.photoUrl || null,
-                    },
-                },
-                {upsert: true, new: true},
-            );
+  findOrCreateByTelegramId = catchError(
+    async (telegramId: string, userData?: Partial<IUser>): Promise<IUserDocument> => {
+      return User.findOneAndUpdate(
+        {telegramId},
+        {
+          $setOnInsert: {
+            telegramId,
+            username: userData?.username || null,
+            firstName: userData?.firstName || null,
+            lastName: userData?.lastName || null,
+          },
+          $set: {
+            photoUrl: userData?.photoUrl || null,
+          },
         },
-    );
+        {upsert: true, new: true},
+      );
+    },
+  );
 
-    findById = catchError(async (id: string): Promise<IUserDocument | null> => {
-        return User.findById(id);
-    });
+  findById = catchError(async (id: string): Promise<IUserDocument | null> => {
+    return User.findById(id);
+  });
 
-    incrementScore = catchError(
-        async (telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null> => {
-            return User.findOneAndUpdate(
-                {telegramId},
-                {
-                    $inc: {score: amount},
-                    $setOnInsert: {telegramId},
-                },
-                {new: true, upsert: true, session},
-            );
+  incrementScore = catchError(
+    async (telegramId: string, amount: number, session?: ClientSession): Promise<IUserDocument | null> => {
+      return User.findOneAndUpdate(
+        {telegramId},
+        {
+          $inc: {score: amount},
+          $setOnInsert: {telegramId},
         },
-    );
+        {new: true, upsert: true, session},
+      );
+    },
+  );
 
-    banUser = catchError(async (telegramId: string, reason: string): Promise<IUserDocument | null> => {
-        return User.findOneAndUpdate(
-            {telegramId},
-            {
-                $set: {
-                    isBanned: true,
-                    bannedAt: new Date(),
-                    banReason: reason,
-                },
-            },
-            {new: true},
-        );
-    });
+  banUser = catchError(async (telegramId: string, reason: string): Promise<IUserDocument | null> => {
+    return User.findOneAndUpdate(
+      {telegramId},
+      {
+        $set: {
+          isBanned: true,
+          bannedAt: new Date(),
+          banReason: reason,
+        },
+      },
+      {new: true},
+    );
+  });
 }

@@ -1,12 +1,12 @@
 import {Container} from 'inversify';
 import {TYPES} from './types/di.types';
 import {
-    IUserRepository,
-    IUserService,
-    IClickRepository,
-    IClickService,
-    ILeaderboardRepository,
-    ILeaderboardService,
+  IUserRepository,
+  IUserService,
+  IClickRepository,
+  IClickService,
+  ILeaderboardRepository,
+  ILeaderboardService,
 } from './interfaces';
 import {UserRepository, ClickRepository, LeaderboardRepository} from './repository';
 import {UserService, ClickService, LeaderboardService} from './services';

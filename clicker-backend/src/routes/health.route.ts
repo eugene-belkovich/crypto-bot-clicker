@@ -4,8 +4,8 @@ import {HealthController} from '../controllers';
 import {TYPES} from '../types/di.types';
 
 export async function healthRoutes(fastify: FastifyInstance) {
-    const healthController = container.get<HealthController>(TYPES.HealthController);
+  const healthController = container.get<HealthController>(TYPES.HealthController);
 
-    fastify.get('/health-check', healthController.check.bind(healthController));
-    fastify.get('/version', healthController.version.bind(healthController));
+  fastify.get('/health-check', healthController.check.bind(healthController));
+  fastify.get('/version', healthController.version.bind(healthController));
 }

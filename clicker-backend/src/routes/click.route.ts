@@ -6,9 +6,9 @@ import {telegramAuthGuard} from '../guards';
 import {saveClicksSchema} from '../schemas';
 
 export async function clickRoutes(fastify: FastifyInstance) {
-    const clickController = container.get<ClickController>(TYPES.ClickController);
+  const clickController = container.get<ClickController>(TYPES.ClickController);
 
-    fastify.addHook('preHandler', telegramAuthGuard);
+  fastify.addHook('preHandler', telegramAuthGuard);
 
-    fastify.post('/', {schema: saveClicksSchema}, clickController.saveClicks.bind(clickController));
+  fastify.post('/', {schema: saveClicksSchema}, clickController.saveClicks.bind(clickController));
 }

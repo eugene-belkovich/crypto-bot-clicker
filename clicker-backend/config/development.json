@@ -1,30 +1,30 @@
 {
-    "app": {
-        "name": "clicker-backend",
-        "version": "1.0.0"
-    },
-    "server": {
-        "port": 8080,
-        "host": "0.0.0.0"
-    },
-    "game": {
-        "pointsPerClick": 1
-    },
-    "antiCheat": {
-        "minIntervalMs": 30,
-        "tooFastThreshold": 0.3,
-        "identicalCoordsLimit": 40,
-        "regularityCV": 0.1,
-        "regularityMeanMs": 100
-    },
-    "logging": {
-        "level": "info"
-    },
-    "telegram": {
-        "skipValidation": false,
-        "maxAuthAgeSec": 86400
-    },
-    "cors": {
-        "origins": ["https://web.telegram.org", "http://localhost:3000"]
-    }
+  "app": {
+    "name": "clicker-backend",
+    "version": "1.0.0"
+  },
+  "server": {
+    "port": 8080,
+    "host": "0.0.0.0"
+  },
+  "game": {
+    "pointsPerClick": 1
+  },
+  "antiCheat": {
+    "minIntervalMs": 30,
+    "tooFastThreshold": 0.3,
+    "identicalCoordsLimit": 40,
+    "regularityCV": 0.1,
+    "regularityMeanMs": 100
+  },
+  "logging": {
+    "level": "info"
+  },
+  "telegram": {
+    "skipValidation": false,
+    "maxAuthAgeSec": 86400
+  },
+  "cors": {
+    "origins": ["https://web.telegram.org", "http://localhost:3000"]
+  }
 }
