@@ -23,7 +23,7 @@ export default function Home() {
       }
       setActiveTab(tab);
     },
-    [flushClicks]
+    [flushClicks],
   );
 
   if (!isReady) {
@@ -34,7 +34,7 @@ export default function Home() {
             className={cn(
               'w-8 h-8 sm:w-10 sm:h-10',
               'border-3 border-blue-500 border-t-transparent',
-              'rounded-full animate-spin'
+              'rounded-full animate-spin',
             )}
           />
           <span className="text-sm sm:text-base text-gray-400">Loading...</span>

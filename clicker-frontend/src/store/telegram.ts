@@ -5,7 +5,7 @@ import {
   isTelegramWebApp,
   type TelegramPlatform,
   type TelegramThemeParams,
-  type TelegramWebApp
+  type TelegramWebApp,
 } from '@/lib/telegram';
 import type {TelegramUser} from '@/types';
 
@@ -83,7 +83,7 @@ export const useTelegramStore = create<TelegramStore>((set, get) => ({
         isReady: true,
         themeParams: webApp.themeParams,
         platform,
-        isMobile: isMobilePlatform(platform)
+        isMobile: isMobilePlatform(platform),
       });
     } else {
       const devInitData = process.env.NEXT_PUBLIC_DEV_INIT_DATA || '';
@@ -95,11 +95,11 @@ export const useTelegramStore = create<TelegramStore>((set, get) => ({
         user: {
           id: 94986611,
           first_name: 'Eugene',
-          username: 'ffrm4n'
+          username: 'ffrm4n',
         },
         platform: 'tdesktop',
-        isMobile: false
+        isMobile: false,
       });
     }
-  }
+  },
 }));

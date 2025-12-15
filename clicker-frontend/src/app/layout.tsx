@@ -5,23 +5,23 @@ import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin']
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
   title: 'Clicker',
-  description: 'Telegram Mini App Clicker Game'
+  description: 'Telegram Mini App Clicker Game',
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false
+  userScalable: false,
 };
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {

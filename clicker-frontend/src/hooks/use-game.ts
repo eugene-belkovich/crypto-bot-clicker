@@ -26,6 +26,6 @@ export function useGame(initData: string) {
     isBanned,
     banReason,
     handleClick: click,
-    flushClicks
+    flushClicks,
   };
 }

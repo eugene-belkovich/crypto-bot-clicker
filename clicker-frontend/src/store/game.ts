@@ -35,13 +35,13 @@ function getMetadata(): ClickMetadata {
     hasOrientation: 'orientation' in window,
     hasOrientationEvent: 'DeviceOrientationEvent' in window,
     hasMotionEvent: 'DeviceMotionEvent' in window,
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 }
 
 export const useGameStore = create<GameStore>((set, get) => {
   const debouncedSyncClicks = debounce(() => void get().syncClicks(), SYNC_DELAY_MS, {
-    maxWait: SYNC_DELAY_MS * 2
+    maxWait: SYNC_DELAY_MS * 2,
   });
 
   return {
@@ -73,7 +73,7 @@ export const useGameStore = create<GameStore>((set, get) => {
           set({
             isBanned: true,
             banReason: error.response.data.banReason || error.response.data.error,
-            isLoaded: true
+            isLoaded: true,
           });
           return;
         }
@@ -104,7 +104,7 @@ export const useGameStore = create<GameStore>((set, get) => {
             isBanned: true,
             banReason: error.response.data.banReason || error.response.data.error,
             isSyncing: false,
-            clicksBuffer: []
+            clicksBuffer: [],
           });
           return;
         }
@@ -124,7 +124,7 @@ export const useGameStore = create<GameStore>((set, get) => {
         timestamp: new Date().toISOString(),
         x,
         y,
-        metadata
+        metadata,
       };
 
       const newBuffer = [...clicksBuffer, clickData];
@@ -143,6 +143,6 @@ export const useGameStore = create<GameStore>((set, get) => {
       if (clicksBuffer.length > 0) {
         await get().syncClicks();
       }
-    }
+    },
   };
 });

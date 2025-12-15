@@ -53,7 +53,7 @@ export function UserRankCard({username, photoUrl, rank, score}: UserRankCardProp
             className={cn(
               'absolute flex items-center justify-center font-bold',
               'ring-2 ring-white/50 shadow-lg',
-              getRankBadgeStyle(rank)
+              getRankBadgeStyle(rank),
             )}
             style={{
               bottom: '-4px',
@@ -62,7 +62,7 @@ export function UserRankCard({username, photoUrl, rank, score}: UserRankCardProp
               height: '28px',
               padding: '0 6px',
               borderRadius: '14px',
-              fontSize: '13px'
+              fontSize: '13px',
             }}
           >
             {rank > 0 ? rank : '?'}

@@ -6,4 +6,3 @@
 - libs: shared code (e.g. api clients)
 - utils: general shared code (e.g. formatters)
 - stores: global state management
-

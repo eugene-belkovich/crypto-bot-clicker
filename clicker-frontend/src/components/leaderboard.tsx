@@ -29,24 +29,24 @@ function getRankStyle(rank: number): {badge: string; row: string} {
   if (rank === 1) {
     return {
       badge: 'bg-gradient-to-br from-yellow-400 to-amber-500',
-      row: 'bg-yellow-500/20'
+      row: 'bg-yellow-500/20',
     };
   }
   if (rank === 2) {
     return {
       badge: 'bg-gradient-to-br from-gray-300 to-gray-400',
-      row: 'bg-white/10'
+      row: 'bg-white/10',
     };
   }
   if (rank === 3) {
     return {
       badge: 'bg-gradient-to-br from-orange-400 to-orange-500',
-      row: 'bg-orange-500/20'
+      row: 'bg-orange-500/20',
     };
   }
   return {
     badge: 'bg-white/20',
-    row: 'bg-white/5'
+    row: 'bg-white/5',
   };
 }
 
@@ -80,7 +80,7 @@ function LeaderboardRow({entry, isCurrentUser, localScore}: LeaderboardRowProps)
       <div
         className={cn(
           'rounded-lg flex items-center justify-center shrink-0 font-bold',
-          isTopThree ? '' : `${badge} text-white`
+          isTopThree ? '' : `${badge} text-white`,
         )}
         style={{width: '32px', height: '32px', fontSize: isTopThree ? '20px' : '13px'}}
       >

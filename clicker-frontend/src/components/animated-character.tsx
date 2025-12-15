@@ -110,9 +110,9 @@ export const AnimatedCharacter = forwardRef<AnimatedCharacterRef>(function Anima
   useImperativeHandle(
     ref,
     () => ({
-      triggerClick
+      triggerClick,
     }),
-    [triggerClick]
+    [triggerClick],
   );
 
   return (

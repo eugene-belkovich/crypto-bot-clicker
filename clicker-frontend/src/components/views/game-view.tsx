@@ -60,7 +60,7 @@ export function GameView({score, onClick}: GameViewProps) {
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
             height: '200px',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)'
+            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
           }}
         />
 
@@ -72,7 +72,7 @@ export function GameView({score, onClick}: GameViewProps) {
           className="coin-container"
           style={{
             transform: isBouncing ? 'scale(0.95) translateY(6px)' : 'scale(1) translateY(0)',
-            transition: 'transform 0.08s ease-out'
+            transition: 'transform 0.08s ease-out',
           }}
         >
           <AnimatedCharacter ref={characterRef} />
@@ -87,7 +87,7 @@ export function GameView({score, onClick}: GameViewProps) {
               left: effect.x,
               top: effect.y,
               pointerEvents: 'none',
-              zIndex: 50
+              zIndex: 50,
             }}
           >
             +1
@@ -99,7 +99,9 @@ export function GameView({score, onClick}: GameViewProps) {
             font-size: 32px;
             font-weight: bold;
             color: #fcd34d;
-            text-shadow: 0 0 12px rgba(252, 211, 77, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow:
+              0 0 12px rgba(252, 211, 77, 0.8),
+              0 2px 4px rgba(0, 0, 0, 0.3);
             animation: floatUp 0.6s ease-out forwards;
             transform: translate(-50%, -50%);
           }

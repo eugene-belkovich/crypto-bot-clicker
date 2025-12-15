@@ -21,7 +21,7 @@ function NavItem({icon, label, isActive, onClick}: NavItemProps) {
         'flex flex-col items-center justify-center',
         'transition-all duration-200',
         'touch-manipulation select-none',
-        'pointer-events-auto'
+        'pointer-events-auto',
       )}
     >
       <div
@@ -29,7 +29,7 @@ function NavItem({icon, label, isActive, onClick}: NavItemProps) {
           'w-16 h-16 rounded-2xl flex items-center justify-center',
           'transition-all duration-200',
           'shadow-lg',
-          isActive ? 'bg-gradient-to-b from-yellow-400 to-orange-500' : 'bg-white/90 backdrop-blur-sm'
+          isActive ? 'bg-gradient-to-b from-yellow-400 to-orange-500' : 'bg-white/90 backdrop-blur-sm',
         )}
       >
         <div className={cn('w-8 h-8', isActive ? 'text-white' : 'text-gray-600')}>{icon}</div>

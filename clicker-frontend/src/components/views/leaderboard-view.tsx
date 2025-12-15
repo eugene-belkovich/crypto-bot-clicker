@@ -24,7 +24,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
   const bgStyle = {
     backgroundImage: 'url(/bf.jpeg)',
     backgroundSize: 'cover',
-    backgroundPosition: 'center bottom'
+    backgroundPosition: 'center bottom',
   };
 
   if (isLoading) {
@@ -34,7 +34,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
             height: '200px',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)'
+            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
           }}
         />
         <div className="flex flex-col items-center gap-3">
@@ -52,7 +52,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
             height: '200px',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)'
+            background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
           }}
         />
         <div className="text-red-400 text-center">{error}</div>
@@ -74,7 +74,7 @@ export function LeaderboardView({initData, visitorTelegramId, username, userPhot
         className="absolute bottom-0 left-0 right-0 pointer-events-none z-10"
         style={{
           height: '200px',
-          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)'
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
         }}
       />
 

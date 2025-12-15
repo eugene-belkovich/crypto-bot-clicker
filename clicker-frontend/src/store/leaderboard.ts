@@ -73,5 +73,5 @@ export const useLeaderboardStore = create<LeaderboardStore>((set, get) => ({
   cleanup: () => {
     get().stopAutoRefresh();
     set({data: null, isLoading: true, error: null, initData: ''});
-  }
+  },
 }));

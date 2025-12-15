@@ -22,7 +22,7 @@ export function MobileOnlyView({platform, botUrl}: MobileOnlyViewProps) {
       style={{
         backgroundImage: 'url(/bf.jpeg)',
         backgroundSize: 'cover',
-        backgroundPosition: 'center bottom'
+        backgroundPosition: 'center bottom',
       }}
     >
       <div className="bg-black/50 backdrop-blur-md rounded-3xl p-8 mx-4 text-center max-w-sm">

@@ -25,5 +25,5 @@ export const config = {
   },
   get platformLock(): boolean {
     return getConfig().platformLock;
-  }
+  },
 };
