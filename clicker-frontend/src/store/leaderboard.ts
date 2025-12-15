@@ -59,7 +59,6 @@ export const useLeaderboardStore = create<LeaderboardStore>((set, get) => ({
       set({data: result, error: null, isLoading: false});
     } catch (error) {
       if (isBannedError(error)) {
-        const {error: errorMessage} = error.response?.data ?? {};
         useGameStore.setState({isBanned: true, isLoaded: true});
         set({error: 'Account suspended', isLoading: false});
         return;
