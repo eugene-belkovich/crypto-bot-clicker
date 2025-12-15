@@ -1,34 +1,77 @@
-# Crypto Clicker Bot
+# Telegram Bot
 
-Telegram bot for Crypto Clicker mini-app game.
+Telegram
+бот
+для
+запуска
+Mini
+App
+игры
+Crypto
+Bot
+Clicker.
 
-## Setup
+## Установка
 
 ```bash
-cp .env.example .env
 npm install
+cp .env.example .env
 ```
 
-## Run
+## Переменные окружения
+
+| Переменная     | Описание                                               | По умолчанию |
+|----------------|--------------------------------------------------------|--------------|
+| `BOT_TOKEN`    | Токен бота от @BotFather                               | —            |
+| `MINI_APP_URL` | URL Telegram Mini App                                  | —            |
+| `WEBHOOK_URL`  | URL вебхука для production                             | —            |
+| `APP_PORT`     | Порт сервера                                           | `3001`       |
+| `NODE_ENV`     | Окружение (`local`, `production`)                      | `local`      |
+| `LOG_LEVEL`    | Уровень логирования (`debug`, `info`, `warn`, `error`) | `info`       |
+
+## Команды
 
 ```bash
-npm run dev      # Development with hot-reload
-npm start        # Production
+# Разработка
+npm run dev           # Запуск с hot-reload (tsx watch)
+
+# Сборка и запуск
+npm run build         # Сборка TypeScript
+npm run start         # Запуск production-сервера
+
+# Docker
+npm run docker:build  # Сборка Docker-образа
+npm run docker:run    # Запуск контейнера
+
+# Линтинг
+npm run format        # Форматирование Prettier
+npm run format:check  # Проверка форматирования
 ```
 
-## Docker
+## Структура
 
-```bash
-npm run docker:build
-npm run docker:run
+```
+src/
+├── server.ts         # Точка входа
+├── bot/              # Логика бота (grammy)
+└── utils/            # Утилиты
 ```
 
-## Environment
+## Режимы работы
 
-| Variable       | Description                                         |
-| -------------- | --------------------------------------------------- |
-| `BOT_TOKEN`    | Telegram bot token from @BotFather                  |
-| `MINI_APP_URL` | URL of your Telegram Mini App                       |
-| `APP_PORT`     | Server port (default: 3001)                         |
-| `NODE_ENV`     | Environment: development / production               |
-| `LOG_LEVEL`    | Log level: debug, info, warn, error (default: info) |
+-
+*
+*local
+**:
+Long
+polling (
+не
+требует
+вебхук)
+-
+*
+*development
+**:
+Webhook
+через
+Express
