@@ -1,4 +1,4 @@
-.PHONY: seedTop5 seedTop50 seedReset ban unban
+.PHONY: seedTop5 seedTop50 seedReset ban unban dump restore
 
 seedTop5:
 	npm run seed:top5
@@ -14,3 +14,9 @@ ban:
 
 unban:
 	npx ts-node scripts/unbanUser.ts
+
+dump:
+	./scripts/dbDump.sh
+
+restore:
+	./scripts/dbRestore.sh $(path)
