@@ -101,7 +101,7 @@ async function startServer() {
     console.log(`Express server listening on port ${config.port}`);
 
     if (config.webhookUrl) {
-      // Production: use webhook
+      // Development: use webhook
       const webhookPath = `/webhook/${config.botToken}`;
       const fullWebhookUrl = `${config.webhookUrl}${webhookPath}`;
 

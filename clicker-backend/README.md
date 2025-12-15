@@ -11,19 +11,19 @@ cp .env.example .env
 
 ## Переменные окружения
 
-| Переменная | Описание | По умолчанию |
-|------------|----------|--------------|
-| `PORT` | Порт сервера | `8080` |
-| `HOST` | Хост сервера | `0.0.0.0` |
-| `NODE_ENV` | Окружение (`local`, `production`) | `local` |
-| `TELEGRAM_BOT_TOKEN` | Токен Telegram бота для валидации initData | — |
-| `SKIP_TELEGRAM_VALIDATION` | Пропустить валидацию Telegram (для разработки) | `false` |
-| `MONGODB_URI` | URI подключения к MongoDB | — |
-| `ALLOWED_ORIGINS` | Разрешённые origins для CORS (через запятую) | — |
-| `LOG_LEVEL` | Уровень логирования (`debug`, `info`, `warn`, `error`) | `info` |
-| `MIGRATE_MONGO_URI` | URI MongoDB для миграций | — |
-| `MIGRATE_MONGO_COLLECTION` | Коллекция для хранения статуса миграций | `migrations` |
-| `MIGRATE_MIGRATIONS_PATH` | Путь к папке миграций | `./migrations` |
+| Переменная                 | Описание                                               | По умолчанию   |
+| -------------------------- | ------------------------------------------------------ | -------------- |
+| `PORT`                     | Порт сервера                                           | `8080`         |
+| `HOST`                     | Хост сервера                                           | `0.0.0.0`      |
+| `NODE_ENV`                 | Окружение (`local`, `production`)                      | `local`        |
+| `TELEGRAM_BOT_TOKEN`       | Токен Telegram бота для валидации initData             | —              |
+| `SKIP_TELEGRAM_VALIDATION` | Пропустить валидацию Telegram (для разработки)         | `false`        |
+| `MONGODB_URI`              | URI подключения к MongoDB                              | —              |
+| `ALLOWED_ORIGINS`          | Разрешённые origins для CORS (через запятую)           | —              |
+| `LOG_LEVEL`                | Уровень логирования (`debug`, `info`, `warn`, `error`) | `info`         |
+| `MIGRATE_MONGO_URI`        | URI MongoDB для миграций                               | —              |
+| `MIGRATE_MONGO_COLLECTION` | Коллекция для хранения статуса миграций                | `migrations`   |
+| `MIGRATE_MIGRATIONS_PATH`  | Путь к папке миграций                                  | `./migrations` |
 
 ## Команды
 
