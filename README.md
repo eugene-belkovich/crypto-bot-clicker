@@ -2,7 +2,9 @@
 
 Ссылка на игру: https://t.me/CryptoBotClickerBot
 
-Ссылка на обзор: https://www.loom.com/share/a7ff92b59c67483c9b656b3dedd99fef
+Ссылка на обзор 1: https://www.loom.com/share/a7ff92b59c67483c9b656b3dedd99fef
+
+Ссылка на обзор 2: https://www.loom.com/share/02aab15a4d574b43a6e48ebf5ca03ba1
 
 Telegram Mini App — кликер-игра с криптовалютной тематикой.
 
