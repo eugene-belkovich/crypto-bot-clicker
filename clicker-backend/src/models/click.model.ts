@@ -22,23 +22,23 @@ const clickSchema = new Schema<IClickDocument>(
     {
         userId: {
             type: String,
-            required: true
+            required: true,
         },
         timestamp: {
             type: Date,
-            required: true
+            required: true,
         },
         x: {
             type: Number,
             required: true,
             min: -100000,
-            max: 100000
+            max: 100000,
         },
         y: {
             type: Number,
             required: true,
             min: -100000,
-            max: 100000
+            max: 100000,
         },
         metadata: {
             userAgent: String,
@@ -46,17 +46,17 @@ const clickSchema = new Schema<IClickDocument>(
             hasOrientation: Boolean,
             hasOrientationEvent: Boolean,
             hasMotionEvent: Boolean,
-            timeZone: String
-        }
+            timeZone: String,
+        },
     },
     {
         timeseries: {
             timeField: 'timestamp',
             metaField: 'userId',
-            granularity: 'seconds'
+            granularity: 'seconds',
         },
-        expireAfterSeconds: 60 * 60 * 24 * 90 // todo now 90 days ttl. do i need to remove ttl?
-    }
+        expireAfterSeconds: 60 * 60 * 24 * 90, // todo now 90 days ttl. do i need to remove ttl?
+    },
 );
 
 clickSchema.index({userId: 1, timestamp: 1}, {unique: true});

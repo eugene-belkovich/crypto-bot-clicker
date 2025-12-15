@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import { User } from '../src/models/user.model';
-import { Click } from '../src/models/click.model';
+import {User} from '../src/models/user.model';
+import {Click} from '../src/models/click.model';
 
 async function seedReset() {
     try {

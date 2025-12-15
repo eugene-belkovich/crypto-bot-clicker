@@ -6,9 +6,8 @@ import {ILeaderboardRepository, ILeaderboardService, IUserRepository, Leaderboar
 export class LeaderboardService implements ILeaderboardService {
     constructor(
         @inject(TYPES.LeaderboardRepository) private leaderboardRepository: ILeaderboardRepository,
-        @inject(TYPES.UserRepository) private userRepository: IUserRepository
-    ) {
-    }
+        @inject(TYPES.UserRepository) private userRepository: IUserRepository,
+    ) {}
 
     async getLeaderboard(telegramId: string): Promise<LeaderboardResponse> {
         const [leaderboard, rank, user] = await Promise.all([

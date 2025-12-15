@@ -9,7 +9,7 @@ import {config} from '../config';
 export class ClickService implements IClickService {
     constructor(
         @inject(TYPES.ClickRepository) private clickRepository: IClickRepository,
-        @inject(TYPES.UserRepository) private userRepository: IUserRepository
+        @inject(TYPES.UserRepository) private userRepository: IUserRepository,
     ) {}
 
     async saveClicks(telegramId: string, clicks: ClickData[]): Promise<number> {

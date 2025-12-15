@@ -1,67 +1,67 @@
 export class ApplicationError extends Error {
-  public readonly statusCode: number;
-  public readonly isOperational: boolean;
+    public readonly statusCode: number;
+    public readonly isOperational: boolean;
 
-  constructor(message: string, statusCode: number, isOperational: boolean = true) {
-    super(message);
-    this.statusCode = statusCode;
-    this.isOperational = isOperational;
-    Object.setPrototypeOf(this, ApplicationError.prototype);
-    Error.captureStackTrace(this, this.constructor);
-  }
+    constructor(message: string, statusCode: number, isOperational: boolean = true) {
+        super(message);
+        this.statusCode = statusCode;
+        this.isOperational = isOperational;
+        Object.setPrototypeOf(this, ApplicationError.prototype);
+        Error.captureStackTrace(this, this.constructor);
+    }
 }
 
 export class BadRequestError extends ApplicationError {
-  constructor(message: string = 'Bad Request') {
-    super(message, 400);
-  }
+    constructor(message: string = 'Bad Request') {
+        super(message, 400);
+    }
 }
 
 export class UnauthorizedError extends ApplicationError {
-  constructor(message: string = 'Unauthorized') {
-    super(message, 401);
-  }
+    constructor(message: string = 'Unauthorized') {
+        super(message, 401);
+    }
 }
 
 export class ForbiddenError extends ApplicationError {
-  constructor(message: string = 'Forbidden') {
-    super(message, 403);
-  }
+    constructor(message: string = 'Forbidden') {
+        super(message, 403);
+    }
 }
 
 export class NotFoundError extends ApplicationError {
-  constructor(message: string = 'Not Found') {
-    super(message, 404);
-  }
+    constructor(message: string = 'Not Found') {
+        super(message, 404);
+    }
 }
 
 export class ConflictError extends ApplicationError {
-  constructor(message: string = 'Conflict') {
-    super(message, 409);
-  }
+    constructor(message: string = 'Conflict') {
+        super(message, 409);
+    }
 }
 
 export class ValidationError extends ApplicationError {
-  public readonly errors: Record<string, string[]>;
+    public readonly errors: Record<string, string[]>;
 
-  constructor(message: string = 'Validation Error', errors: Record<string, string[]> = {}) {
-    super(message, 400);
-    this.errors = errors;
-  }
+    constructor(message: string = 'Validation Error', errors: Record<string, string[]> = {}) {
+        super(message, 400);
+        this.errors = errors;
+    }
 }
 
 export class RepositoryError extends ApplicationError {
-  constructor(message: string, statusCode: number = 500) {
-    super(message, statusCode);
-  }
+    constructor(message: string, statusCode: number = 500) {
+        super(message, statusCode);
+    }
 }
 
 export class BannedError extends ApplicationError {
-  public readonly banned = true;
-  public readonly reason?: string;
+    public readonly banned = true;
+    public readonly reason?: string;
 
-  constructor(reason?: string) {
-    super(reason || 'Account suspended', 403);
-    this.reason = reason;
-  }
+    constructor(reason?: string) {
+        super(reason || 'Account suspended', 403);
+        this.reason = reason;
+    }
 }

@@ -27,10 +27,7 @@ export class LeaderboardRepository implements ILeaderboardRepository {
 
         const higherOrTieBefore = await User.countDocuments({
             isBanned: {$ne: true},
-            $or: [
-                {score: {$gt: me.score}},
-                {score: me.score, _id: {$lt: me._id}},
-            ],
+            $or: [{score: {$gt: me.score}}, {score: me.score, _id: {$lt: me._id}}],
         });
 
         return higherOrTieBefore + 1;

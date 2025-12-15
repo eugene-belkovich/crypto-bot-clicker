@@ -25,9 +25,6 @@
         "maxAuthAgeSec": 86400
     },
     "cors": {
-        "origins": [
-            "https://web.telegram.org",
-            "http://localhost:3000"
-        ]
+        "origins": ["https://web.telegram.org", "http://localhost:3000"]
     }
 }

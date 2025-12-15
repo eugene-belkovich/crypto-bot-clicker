@@ -58,7 +58,7 @@ const userSchema = new Schema<IUserDocument>(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 userSchema.index({score: -1, _id: 1});

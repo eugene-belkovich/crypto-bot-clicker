@@ -15,19 +15,16 @@ export function validateClickBatch(clicks: ClickData[]): ValidationResult {
 
     const antiCheat = config.antiCheat;
 
-    const sorted = [...clicks].sort(
-        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    );
+    const sorted = [...clicks].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
     // 1. Check intervals between clicks
     const intervals: number[] = [];
     for (let i = 1; i < sorted.length; i++) {
-        const interval =
-            new Date(sorted[i].timestamp).getTime() - new Date(sorted[i - 1].timestamp).getTime();
+        const interval = new Date(sorted[i].timestamp).getTime() - new Date(sorted[i - 1].timestamp).getTime();
         intervals.push(interval);
     }
 
-    const tooFastCount = intervals.filter((i) => i < antiCheat.minIntervalMs).length;
+    const tooFastCount = intervals.filter(i => i < antiCheat.minIntervalMs).length;
     if (tooFastCount > clicks.length * antiCheat.tooFastThreshold) {
         return {
             suspicious: true,
@@ -53,8 +50,7 @@ export function validateClickBatch(clicks: ClickData[]): ValidationResult {
     // 3. Check regularity (too regular intervals = bot)
     if (intervals.length >= 5) {
         const mean = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-        const variance =
-            intervals.reduce((sum, i) => sum + Math.pow(i - mean, 2), 0) / intervals.length;
+        const variance = intervals.reduce((sum, i) => sum + Math.pow(i - mean, 2), 0) / intervals.length;
         const stdDev = Math.sqrt(variance);
         const cv = mean > 0 ? stdDev / mean : 0;
 

@@ -13,7 +13,7 @@ export class UserService implements IUserService {
 
     async getOrCreateUser(
         telegramId: string,
-        userData?: {username?: string; firstName?: string; lastName?: string; photoUrl?: string}
+        userData?: {username?: string; firstName?: string; lastName?: string; photoUrl?: string},
     ): Promise<IUserDocument> {
         return this.userRepository.findOrCreateByTelegramId(telegramId, userData);
     }

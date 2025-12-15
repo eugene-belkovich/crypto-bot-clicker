@@ -7,7 +7,7 @@ import {ClickData, IClickService, IUserService} from '../interfaces';
 export class ClickController {
     constructor(
         @inject(TYPES.ClickService) private clickService: IClickService,
-        @inject(TYPES.UserService) private userService: IUserService
+        @inject(TYPES.UserService) private userService: IUserService,
     ) {}
 
     async saveClicks(request: FastifyRequest<{Body: ClickData[]}>, reply: FastifyReply) {

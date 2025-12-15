@@ -7,7 +7,7 @@ import {ILeaderboardService, IUserService} from '../interfaces';
 export class UserController {
     constructor(
         @inject(TYPES.UserService) private userService: IUserService,
-        @inject(TYPES.LeaderboardService) private leaderboardService: ILeaderboardService
+        @inject(TYPES.LeaderboardService) private leaderboardService: ILeaderboardService,
     ) {}
 
     async getMe(request: FastifyRequest, reply: FastifyReply) {

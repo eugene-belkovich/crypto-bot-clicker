@@ -25,9 +25,9 @@ export class UserRepository implements IUserRepository {
                         photoUrl: userData?.photoUrl || null,
                     },
                 },
-                {upsert: true, new: true}
+                {upsert: true, new: true},
             );
-        }
+        },
     );
 
     findById = catchError(async (id: string): Promise<IUserDocument | null> => {
@@ -40,26 +40,24 @@ export class UserRepository implements IUserRepository {
                 {telegramId},
                 {
                     $inc: {score: amount},
-                    $setOnInsert: {telegramId}
+                    $setOnInsert: {telegramId},
                 },
-                {new: true, upsert: true, session}
+                {new: true, upsert: true, session},
             );
-        }
+        },
     );
 
-    banUser = catchError(
-        async (telegramId: string, reason: string): Promise<IUserDocument | null> => {
-            return User.findOneAndUpdate(
-                {telegramId},
-                {
-                    $set: {
-                        isBanned: true,
-                        bannedAt: new Date(),
-                        banReason: reason,
-                    },
+    banUser = catchError(async (telegramId: string, reason: string): Promise<IUserDocument | null> => {
+        return User.findOneAndUpdate(
+            {telegramId},
+            {
+                $set: {
+                    isBanned: true,
+                    bannedAt: new Date(),
+                    banReason: reason,
                 },
-                {new: true}
-            );
-        }
-    );
+            },
+            {new: true},
+        );
+    });
 }

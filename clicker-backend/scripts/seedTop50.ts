@@ -1,22 +1,112 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import { User } from '../src/models/user.model';
-import { Click } from '../src/models/click.model';
+import {User} from '../src/models/user.model';
+import {Click} from '../src/models/click.model';
 
 const firstNames = [
-    'Alex', 'Maria', 'Ivan', 'Elena', 'Dmitry', 'Anna', 'Sergey', 'Olga', 'Nikolay', 'Tatiana',
-    'Pavel', 'Yulia', 'Andrey', 'Natalia', 'Viktor', 'Ekaterina', 'Mikhail', 'Irina', 'Alexey', 'Svetlana',
-    'Roman', 'Oksana', 'Konstantin', 'Vera', 'Denis', 'Galina', 'Vladislav', 'Marina', 'Artem', 'Kristina',
-    'Evgeny', 'Alina', 'Ilya', 'Daria', 'Oleg', 'Polina', 'Maxim', 'Valeria', 'Kirill', 'Anastasia',
-    'Anton', 'Elizaveta', 'Vladlen', 'Sofia', 'Ruslan', 'Diana', 'Bogdan', 'Arina', 'Timur', 'Milana'
+    'Alex',
+    'Maria',
+    'Ivan',
+    'Elena',
+    'Dmitry',
+    'Anna',
+    'Sergey',
+    'Olga',
+    'Nikolay',
+    'Tatiana',
+    'Pavel',
+    'Yulia',
+    'Andrey',
+    'Natalia',
+    'Viktor',
+    'Ekaterina',
+    'Mikhail',
+    'Irina',
+    'Alexey',
+    'Svetlana',
+    'Roman',
+    'Oksana',
+    'Konstantin',
+    'Vera',
+    'Denis',
+    'Galina',
+    'Vladislav',
+    'Marina',
+    'Artem',
+    'Kristina',
+    'Evgeny',
+    'Alina',
+    'Ilya',
+    'Daria',
+    'Oleg',
+    'Polina',
+    'Maxim',
+    'Valeria',
+    'Kirill',
+    'Anastasia',
+    'Anton',
+    'Elizaveta',
+    'Vladlen',
+    'Sofia',
+    'Ruslan',
+    'Diana',
+    'Bogdan',
+    'Arina',
+    'Timur',
+    'Milana',
 ];
 
 const lastNames = [
-    'Ivanov', 'Petrov', 'Sidorov', 'Smirnov', 'Kuznetsov', 'Popov', 'Sokolov', 'Lebedev', 'Kozlov', 'Novikov',
-    'Morozov', 'Volkov', 'Alekseev', 'Fedorov', 'Dmitriev', 'Yakovlev', 'Sorokin', 'Pavlov', 'Andreev', 'Nikolaev',
-    'Egorov', 'Orlov', 'Makarov', 'Tarasov', 'Belov', 'Grishin', 'Kovalev', 'Borisov', 'Ilyin', 'Kiselev',
-    'Medvedev', 'Markov', 'Stepanov', 'Frolov', 'Zaitsev', 'Vinogradov', 'Gorbunov', 'Kazakov', 'Nikitin', 'Voronov',
-    'Baranov', 'Savin', 'Fomin', 'Lukin', 'Komarov', 'Karpov', 'Tikhonov', 'Suvorov', 'Ershov', 'Zakharov'
+    'Ivanov',
+    'Petrov',
+    'Sidorov',
+    'Smirnov',
+    'Kuznetsov',
+    'Popov',
+    'Sokolov',
+    'Lebedev',
+    'Kozlov',
+    'Novikov',
+    'Morozov',
+    'Volkov',
+    'Alekseev',
+    'Fedorov',
+    'Dmitriev',
+    'Yakovlev',
+    'Sorokin',
+    'Pavlov',
+    'Andreev',
+    'Nikolaev',
+    'Egorov',
+    'Orlov',
+    'Makarov',
+    'Tarasov',
+    'Belov',
+    'Grishin',
+    'Kovalev',
+    'Borisov',
+    'Ilyin',
+    'Kiselev',
+    'Medvedev',
+    'Markov',
+    'Stepanov',
+    'Frolov',
+    'Zaitsev',
+    'Vinogradov',
+    'Gorbunov',
+    'Kazakov',
+    'Nikitin',
+    'Voronov',
+    'Baranov',
+    'Savin',
+    'Fomin',
+    'Lukin',
+    'Komarov',
+    'Karpov',
+    'Tikhonov',
+    'Suvorov',
+    'Ershov',
+    'Zakharov',
 ];
 
 async function seedTop50() {
@@ -90,7 +180,7 @@ async function seedTop50() {
 
         // Show top 10 leaderboard
         console.log('\nTop 10 Leaderboard:');
-        const topUsers = await User.find().sort({ score: -1 }).limit(10);
+        const topUsers = await User.find().sort({score: -1}).limit(10);
         topUsers.forEach((user, index) => {
             console.log(`${index + 1}. ${user.firstName} ${user.lastName} (@${user.username}) - ${user.score} points`);
         });

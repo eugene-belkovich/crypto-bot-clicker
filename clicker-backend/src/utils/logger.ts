@@ -8,18 +8,20 @@ const pinoLogger = pino({
         options: {
             colorize: true,
             translateTime: 'HH:MM:ss',
-            ignore: 'pid,hostname'
-        }
-    }
+            ignore: 'pid,hostname',
+        },
+    },
 });
 
 const formatArgs = (...args: unknown[]): string => {
-    return args.map(arg => {
-        if (arg instanceof Error) {
-            return `${arg.message}\n${arg.stack}`;
-        }
-        return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
-    }).join(' ');
+    return args
+        .map(arg => {
+            if (arg instanceof Error) {
+                return `${arg.message}\n${arg.stack}`;
+            }
+            return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
+        })
+        .join(' ');
 };
 
 const logger = {

@@ -31,7 +31,7 @@ async function bootstrap() {
     await fastify.register(rateLimit, {
         max: 200,
         timeWindow: '1 minute',
-        keyGenerator: (request) => {
+        keyGenerator: request => {
             const telegramUser = request.telegramUser?.user;
             return telegramUser?.id?.toString() || request.ip;
         },
@@ -43,52 +43,50 @@ async function bootstrap() {
 
     await fastify.register(sensible);
 
-    fastify.setErrorHandler(
-        (error: FastifyError | ApplicationError, request: FastifyRequest, reply: FastifyReply) => {
-            logger.error('Request error:', error.message, 'url:', request.url, 'method:', request.method);
+    fastify.setErrorHandler((error: FastifyError | ApplicationError, request: FastifyRequest, reply: FastifyReply) => {
+        logger.error('Request error:', error.message, 'url:', request.url, 'method:', request.method);
 
-            if (error instanceof ValidationError) {
-                return reply.status(400).send({
-                    statusCode: 400,
-                    error: 'Validation Error',
-                    message: error.message,
-                    errors: error.errors,
-                });
-            }
-
-            if (error instanceof BannedError) {
-                return reply.status(403).send({
-                    error: error.message,
-                    banned: true,
-                    banReason: error.reason,
-                });
-            }
-
-            if (error instanceof ApplicationError) {
-                return reply.status(error.statusCode).send({
-                    statusCode: error.statusCode,
-                    error: error.name,
-                    message: error.message,
-                });
-            }
-
-            if (error.validation) {
-                return reply.status(400).send({
-                    statusCode: 400,
-                    error: 'Validation Error',
-                    message: 'Request validation failed',
-                    errors: error.validation,
-                });
-            }
-
-            const statusCode = error.statusCode || 500;
-            return reply.status(statusCode).send({
-                statusCode,
-                error: 'Internal Server Error',
-                message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message,
+        if (error instanceof ValidationError) {
+            return reply.status(400).send({
+                statusCode: 400,
+                error: 'Validation Error',
+                message: error.message,
+                errors: error.errors,
             });
         }
-    );
+
+        if (error instanceof BannedError) {
+            return reply.status(403).send({
+                error: error.message,
+                banned: true,
+                banReason: error.reason,
+            });
+        }
+
+        if (error instanceof ApplicationError) {
+            return reply.status(error.statusCode).send({
+                statusCode: error.statusCode,
+                error: error.name,
+                message: error.message,
+            });
+        }
+
+        if (error.validation) {
+            return reply.status(400).send({
+                statusCode: 400,
+                error: 'Validation Error',
+                message: 'Request validation failed',
+                errors: error.validation,
+            });
+        }
+
+        const statusCode = error.statusCode || 500;
+        return reply.status(statusCode).send({
+            statusCode,
+            error: 'Internal Server Error',
+            message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : error.message,
+        });
+    });
 
     fastify.setNotFoundHandler((request, reply) => {
         reply.status(404).send({
@@ -129,12 +127,12 @@ async function bootstrap() {
     process.on('SIGTERM', () => shutdown('SIGTERM'));
     process.on('SIGINT', () => shutdown('SIGINT'));
 
-    process.on('uncaughtException', (err) => {
+    process.on('uncaughtException', err => {
         logger.error('Uncaught Exception:', err);
         process.exit(1);
     });
 
-    process.on('unhandledRejection', (err) => {
+    process.on('unhandledRejection', err => {
         logger.error('Unhandled Rejection:', err);
         process.exit(1);
     });

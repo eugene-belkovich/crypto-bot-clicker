@@ -17,11 +17,11 @@ export class ClickRepository implements IClickRepository {
                         timestamp: new Date(click.timestamp),
                         x: click.x,
                         y: click.y,
-                        metadata: click.metadata
-                    }
+                        metadata: click.metadata,
+                    },
                 },
-                upsert: true
-            }
+                upsert: true,
+            },
         }));
 
         const res = await Click.bulkWrite(batch, {ordered: false});
