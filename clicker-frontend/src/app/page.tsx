@@ -2,7 +2,6 @@
 
 import {useCallback, useState} from 'react';
 import {BottomNavigation, type TabType} from '@/components/navigation';
-import {BanView} from '@/components/views/ban-view';
 import {GameView} from '@/components/views/game-view';
 import {LeaderboardView} from '@/components/views/leaderboard-view';
 import {MobileOnlyView} from '@/components/views/mobile-only-view';
@@ -13,7 +12,7 @@ import {cn} from '@/lib/utils';
 
 export default function Home() {
   const {initData, user, isReady, platform, isMobile} = useTelegram();
-  const {score, handleClick, flushClicks, isBanned, banReason, isLoaded} = useGame(initData);
+  const {score, handleClick, flushClicks, isLoaded} = useGame(initData);
   const [activeTab, setActiveTab] = useState<TabType>('game');
 
   const handleTabChange = useCallback(
@@ -45,10 +44,6 @@ export default function Home() {
 
   if (config.platformLock && !isMobile) {
     return <MobileOnlyView platform={platform} botUrl={config.botUrl} />;
-  }
-
-  if (isBanned) {
-    return <BanView reason={banReason} />;
   }
 
   return (

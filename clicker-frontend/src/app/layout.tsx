@@ -1,6 +1,7 @@
 import type {Metadata, Viewport} from 'next';
 import {Geist} from 'next/font/google';
 import Script from 'next/script';
+import {BanOverlay} from '@/components/ban-overlay';
 import './globals.css';
 
 const geistSans = Geist({
@@ -30,7 +31,10 @@ export default function RootLayout({
       <head>
         <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
       </head>
-      <body className={`${geistSans.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} font-sans antialiased`}>
+        {children}
+        <BanOverlay />
+      </body>
     </html>
   );
 }

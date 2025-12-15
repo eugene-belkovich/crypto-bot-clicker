@@ -1,8 +1,8 @@
 import axios from 'axios';
+import {useGameStore} from '@/store/game';
 import type {ClickData, ClickResponse, LeaderboardData, UserData} from '@/types';
 import {config} from './config';
 
-// Lazy-initialized axios instance to ensure config.apiUrl is available at runtime
 let _apiClient: ReturnType<typeof axios.create> | null = null;
 
 function getApiClient() {
@@ -11,6 +11,20 @@ function getApiClient() {
       baseURL: config.apiUrl,
       timeout: 5000,
     });
+
+    _apiClient.interceptors.response.use(
+      response => response,
+      error => {
+        if (axios.isAxiosError(error) && error.response?.status === 403) {
+          const data = error.response.data;
+          const isBanned = data?.banned || /ban|suspended/i.test(data?.message || data?.error || '');
+          if (isBanned) {
+            useGameStore.getState().setBanned();
+          }
+        }
+        return Promise.reject(error);
+      },
+    );
   }
   return _apiClient;
 }

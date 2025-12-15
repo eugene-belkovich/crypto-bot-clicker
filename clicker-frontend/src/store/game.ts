@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {debounce} from 'lodash-es';
 import {create} from 'zustand';
 import {api} from '@/lib/api';
@@ -15,7 +14,6 @@ interface GameState {
   metadata: ClickMetadata;
   initData: string;
   isBanned: boolean;
-  banReason?: string;
 }
 
 interface GameActions {
@@ -23,6 +21,7 @@ interface GameActions {
   click: (x: number, y: number) => void;
   syncClicks: () => Promise<void>;
   flushClicks: () => Promise<void>;
+  setBanned: () => void;
 }
 
 type GameStore = GameState & GameActions;
@@ -52,7 +51,6 @@ export const useGameStore = create<GameStore>((set, get) => {
     metadata: {},
     initData: '',
     isBanned: false,
-    banReason: undefined,
 
     init: async (initData: string) => {
       const {initData: currentInitData} = get();
@@ -67,19 +65,9 @@ export const useGameStore = create<GameStore>((set, get) => {
         // Account for any clicks made while fetching
         const {clicksBuffer} = get();
         set({score: serverScore + clicksBuffer.length, isLoaded: true});
-      } catch (error) {
-        // Check if banned
-        if (axios.isAxiosError(error) && error.response?.status === 403 && error.response?.data?.banned) {
-          set({
-            isBanned: true,
-            banReason: error.response.data.banReason || error.response.data.error,
-            isLoaded: true,
-          });
-          return;
-        }
-        // On other errors, keep pending clicks as score
-        const {clicksBuffer} = get();
-        set({score: clicksBuffer.length, isLoaded: true});
+      } catch {
+        // Ban is handled by API interceptor, just set loaded
+        set({isLoaded: true});
       }
     },
 
@@ -97,20 +85,13 @@ export const useGameStore = create<GameStore>((set, get) => {
         const response = await api.submitClicks(clicksToSync, initData);
         const {clicksBuffer: pending} = get();
         set({score: response.score + pending.length, isSyncing: false});
-      } catch (error) {
-        // Check if banned (403 with banned flag)
-        if (axios.isAxiosError(error) && error.response?.status === 403 && error.response?.data?.banned) {
-          set({
-            isBanned: true,
-            banReason: error.response.data.banReason || error.response.data.error,
-            isSyncing: false,
-            clicksBuffer: [],
-          });
-          return;
+      } catch {
+        // Ban is handled by API interceptor
+        // Restore clicks on other errors (if not banned)
+        const {clicksBuffer: pending, isBanned: nowBanned} = get();
+        if (!nowBanned) {
+          set({clicksBuffer: [...clicksToSync, ...pending], isSyncing: false});
         }
-        // Restore clicks on other errors
-        const {clicksBuffer: pending} = get();
-        set({clicksBuffer: [...clicksToSync, ...pending], isSyncing: false});
       }
     },
 
@@ -143,6 +124,10 @@ export const useGameStore = create<GameStore>((set, get) => {
       if (clicksBuffer.length > 0) {
         await get().syncClicks();
       }
+    },
+
+    setBanned: () => {
+      set({isBanned: true, isSyncing: false, clicksBuffer: []});
     },
   };
 });

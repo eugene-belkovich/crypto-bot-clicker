@@ -8,7 +8,6 @@ const AUTO_REFRESH_INTERVAL_MS = 10000;
 
 interface BannedResponse {
   banned: true;
-  banReason?: string;
   error?: string;
 }
 
@@ -60,8 +59,8 @@ export const useLeaderboardStore = create<LeaderboardStore>((set, get) => ({
       set({data: result, error: null, isLoading: false});
     } catch (error) {
       if (isBannedError(error)) {
-        const {banReason, error: errorMessage} = error.response?.data ?? {};
-        useGameStore.setState({isBanned: true, banReason: banReason || errorMessage, isLoaded: true});
+        const {error: errorMessage} = error.response?.data ?? {};
+        useGameStore.setState({isBanned: true, isLoaded: true});
         set({error: 'Account suspended', isLoading: false});
         return;
       }
