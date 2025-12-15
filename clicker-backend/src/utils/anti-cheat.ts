@@ -1,3 +1,24 @@
+/**
+ * Anti-Cheat System
+ *
+ * Защита от автокликеров и ботов в игре-кликере.
+ * Анализирует батч кликов и выявляет подозрительные паттерны.
+ *
+ * Проверки:
+ * 1. Too fast — слишком быстрые клики (>30% кликов с интервалом <30мс)
+ *    Человек физически не может кликать быстрее ~15 раз/сек
+ *
+ * 2. Identical coords — клики в одну точку (40+ кликов в одну позицию)
+ *    Боты кликают точно в одну точку, люди немного двигают мышь
+ *
+ * 3. Robotic pattern — машинная регулярность интервалов
+ *    CV (коэффициент вариации) < 10% при среднем интервале < 100мс
+ *    Человек не может кликать с точностью робота (ровно каждые 50мс)
+ *
+ * Пример:
+ *   Человек: 120мс, 95мс, 140мс, 88мс (естественный разброс)
+ *   Бот:     50мс, 50мс, 50мс, 50мс (идеально ровно)
+ */
 import {config} from '../config';
 import {ClickData} from '../interfaces';
 
@@ -8,6 +29,11 @@ export interface ValidationResult {
 
 export type AntiCheatConfig = typeof config.antiCheat;
 
+/**
+ * Валидирует батч кликов на подозрительную активность
+ * @param clicks - массив кликов с timestamp и координатами x/y
+ * @returns suspicious: true если обнаружен бот, reason - причина
+ */
 export function validateClickBatch(clicks: ClickData[]): ValidationResult {
   if (clicks.length < 2) {
     return {suspicious: false, reason: ''};
