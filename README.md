@@ -1,5 +1,7 @@
 # Crypto Bot Clicker
 
+Ссылка на игру: @CryptoBotClickerBot
+
 Telegram Mini App — кликер-игра с криптовалютной тематикой.
 
 ## Архитектура
@@ -22,22 +24,22 @@ Telegram Mini App — кликер-игра с криптовалютной те
 
 ## Подпроекты
 
-| Проект | Описание | Документация |
-|--------|----------|--------------|
-| [clicker-backend](./clicker-backend) | REST API на Fastify + MongoDB | [README](./clicker-backend/README.md) |
-| [clicker-frontend](./clicker-frontend) | Telegram Mini App на Next.js | [README](./clicker-frontend/README.md) |
-| [telegram-bot](./telegram-bot) | Telegram бот на grammy | [README](./telegram-bot/README.md) |
+| Проект                                 | Описание                      | Документация                           |
+|----------------------------------------|-------------------------------|----------------------------------------|
+| [clicker-backend](./clicker-backend)   | REST API на Fastify + MongoDB | [README](./clicker-backend/README.md)  |
+| [clicker-frontend](./clicker-frontend) | Telegram Mini App на Next.js  | [README](./clicker-frontend/README.md) |
+| [telegram-bot](./telegram-bot)         | Telegram бот на grammy        | [README](./telegram-bot/README.md)     |
 
 ## Инфраструктура
 
-| Компонент | Сервис | Регион |
-|-----------|--------|--------|
-| Frontend | Cloudflare Pages | Global CDN |
-| Backend | AWS App Runner | US |
-| Telegram Bot | AWS App Runner | US |
-| Container Registry | AWS ECR | US |
-| Database | MongoDB Atlas | US |
-| Monitoring | Better Uptime | — |
+| Компонент          | Сервис           | Регион     |
+|--------------------|------------------|------------|
+| Frontend           | Cloudflare Pages | Global CDN |
+| Backend            | AWS App Runner   | US         |
+| Telegram Bot       | AWS App Runner   | US         |
+| Container Registry | AWS ECR          | US         |
+| Database           | MongoDB Atlas    | US         |
+| Monitoring         | Better Uptime    | —          |
 
 ## CI/CD
 
@@ -45,11 +47,11 @@ Telegram Mini App — кликер-игра с криптовалютной те
 
 Каждый подпроект деплоится **независимо и параллельно** — триггер срабатывает только при изменениях в соответствующей папке:
 
-| Проект | Триггер | Pipeline |
-|--------|---------|----------|
-| `clicker-backend/**` | Build → ECR → App Runner | Blue/Green |
-| `clicker-frontend/**` | Build → Cloudflare Pages | Instant |
-| `telegram-bot/**` | Build → ECR → App Runner | Blue/Green |
+| Проект                | Триггер                  | Pipeline   |
+|-----------------------|--------------------------|------------|
+| `clicker-backend/**`  | Build → ECR → App Runner | Blue/Green |
+| `clicker-frontend/**` | Build → Cloudflare Pages | Instant    |
+| `telegram-bot/**`     | Build → ECR → App Runner | Blue/Green |
 
 ### Стратегия деплоя
 
