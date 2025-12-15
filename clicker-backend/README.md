@@ -21,6 +21,7 @@ cp .env.example .env
 | `MONGODB_URI`              | URI подключения к MongoDB                              | —              |
 | `ALLOWED_ORIGINS`          | Разрешённые origins для CORS (через запятую)           | —              |
 | `LOG_LEVEL`                | Уровень логирования (`debug`, `info`, `warn`, `error`) | `info`         |
+| `CACHE_ENABLED`            | Включить in-memory кэш лидерборда (5 сек TTL)          | `true`         |
 | `MIGRATE_MONGO_URI`        | URI MongoDB для миграций                               | —              |
 | `MIGRATE_MONGO_COLLECTION` | Коллекция для хранения статуса миграций                | `migrations`   |
 | `MIGRATE_MIGRATIONS_PATH`  | Путь к папке миграций                                  | `./migrations` |

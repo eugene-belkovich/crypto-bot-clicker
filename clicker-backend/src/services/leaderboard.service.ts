@@ -1,6 +1,13 @@
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../types/di.types';
-import {ILeaderboardRepository, ILeaderboardService, IUserRepository, LeaderboardResponse} from '../interfaces';
+import {
+  ILeaderboardRepository,
+  ILeaderboardService,
+  IUserRepository,
+  LeaderboardEntry,
+  LeaderboardResponse,
+} from '../interfaces';
+import {cacheGet, cacheSet} from '../utils';
 
 @injectable()
 export class LeaderboardService implements ILeaderboardService {
@@ -10,8 +17,15 @@ export class LeaderboardService implements ILeaderboardService {
   ) {}
 
   async getLeaderboard(telegramId: string): Promise<LeaderboardResponse> {
-    const [leaderboard, rank, user] = await Promise.all([
-      this.leaderboardRepository.getTopUsers(25),
+    const cacheKey = 'lb:top:25';
+    let leaderboard = cacheGet(cacheKey) as LeaderboardEntry[] | undefined;
+
+    if (!leaderboard) {
+      leaderboard = await this.leaderboardRepository.getTopUsers(25);
+      cacheSet(cacheKey, leaderboard, 5);
+    }
+
+    const [rank, user] = await Promise.all([
       this.leaderboardRepository.getUserRank(telegramId),
       this.userRepository.findByTelegramId(telegramId),
     ]);
