@@ -3,10 +3,6 @@
     "name": "clicker-backend",
     "version": "1.0.0"
   },
-  "server": {
-    "port": 8080,
-    "host": "0.0.0.0"
-  },
   "game": {
     "pointsPerClick": 1
   },
@@ -17,20 +13,7 @@
     "regularityCV": 0.1,
     "regularityMeanMs": 100
   },
-  "logging": {
-    "level": "debug"
-  },
   "telegram": {
-    "skipValidation": true,
     "maxAuthAgeSec": 86400
-  },
-  "cors": {
-    "origins": [
-      "https://web.telegram.org",
-      "https://crypto-bot-clicker-frontend-dev.pages.dev",
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "http://localhost:5173"
-    ]
   }
 }

@@ -1,6 +1,5 @@
 import type {FastifyInstance} from 'fastify';
 import cors from '@fastify/cors';
-import {config} from '../config';
 
 function normalizeOrigin(value: string): string | null {
   try {
@@ -11,12 +10,9 @@ function normalizeOrigin(value: string): string | null {
 }
 
 export async function registerCors(fastify: FastifyInstance) {
-  const fromConfig = (config as any)?.cors?.origins as string[] | undefined;
-  const fromEnv =
-    process.env.ALLOWED_ORIGINS?.split(',')
-      .map(s => s.trim())
-      .filter(Boolean) || [];
-  const allowed = Array.from(new Set([...(fromConfig || []), ...fromEnv]))
+  const allowed = (process.env.ALLOWED_ORIGINS?.split(',') || [])
+    .map(s => s.trim())
+    .filter(Boolean)
     .map(o => normalizeOrigin(o))
     .filter((o): o is string => Boolean(o));
 

@@ -24,7 +24,7 @@ export async function telegramAuthGuard(request: FastifyRequest) {
     throw new UnauthorizedError('Invalid init data');
   }
 
-  if (!config.telegram.skipValidation) {
+  if (process.env.SKIP_TELEGRAM_VALIDATION !== 'true') {
     const nowSec = Math.floor(Date.now() / 1000);
     const maxAge = (config.telegram as any).maxAuthAgeSec ?? 86400; // default 24h
     if (nowSec - parsed.authDate > maxAge) {

@@ -7,15 +7,15 @@ import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import sensible from '@fastify/sensible';
 
-import {config, connectToDatabase} from './config';
+import {connectToDatabase} from './config';
 import {registerRoutes} from './routes';
 import {ApplicationError, BannedError, ValidationError} from './errors';
 import {logger} from './utils';
 
 dotenv.config();
 
-const PORT = config.server.port;
-const HOST = config.server.host;
+const PORT = parseInt(process.env.PORT || '8080', 10);
+const HOST = process.env.HOST || '0.0.0.0';
 
 async function bootstrap() {
   const fastify = Fastify({
